@@ -1,6 +1,11 @@
 package cli
 
-import "github.com/spf13/cobra"
+import (
+	"fmt"
+
+	"github.com/gihyodocker/todoapp/pkg/version"
+	"github.com/spf13/cobra"
+)
 
 type CLI struct {
 	rootCmd *cobra.Command
@@ -13,6 +18,14 @@ func NewCLI(name, desc string) *CLI {
 			Short: desc,
 		},
 	}
+	versionCmd := &cobra.Command{
+		Use:   "version",
+		Short: "Print the information of current binary",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(version.Get())
+		},
+	}
+	c.rootCmd.AddCommand(versionCmd)
 	// TODO: Set global flags?
 	return c
 }
