@@ -30,6 +30,7 @@ func Get() Info {
 }
 
 func (i Info) String() string {
+	fmt.Print("aaa\n")
 	if i.Version == unspecified {
 		info, _ := debug.ReadBuildInfo()
 		return fmt.Sprintf("todoapp Version: %s", info.Main.Version)
