@@ -47,6 +47,29 @@ migrate-schema-up: setup-db-tools
 migrate-schema-down: setup-db-tools
 	migrate -source file://./database -database mysql://$(DB_USERNAME):$(DB_PASSWORD)@tcp\($(DB_HOST):$(DB_PORT)\)/$(DB_NAME) down
 
+define SQLBOILER_CONFIG
+pkgname="model"
+output="pkg/model"
+[mysql]
+  dbname = "$(DB_NAME)"
+  host   = "$(DB_HOST)"
+  port   = $(DB_PORT)
+  user   = "$(DB_USERNAME)"
+  pass   = "$(DB_PASSWORD)"
+  sslmode = "false"
+  blacklist = ["schema_migrations"]
+endef
+export SQLBOILER_CONFIG
+
+.PHONY: sqlboiler.toml
+sqlboiler.toml:
+	@echo "$$SQLBOILER_CONFIG" > $@
+
+.PHONY: generate-db-model
+generate-db-model: sqlboiler.toml
+	@sqlboiler mysql --no-tests
+	@rm sqlboiler.toml
+
 .PHONY: build
 build:
 	$(eval GIT_COMMIT := $(shell git describe --tags --always))
