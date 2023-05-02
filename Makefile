@@ -14,11 +14,11 @@ endif
 # Database variables
 DB_HOST ?= localhost
 DB_PORT ?= 3306
-DB_NAME ?= todoapp
-DB_USERNAME ?= todoapp_user
+DB_NAME ?= taskapp
+DB_USERNAME ?= taskapp_user
 DB_PASSWORD ?= password
 
-ROOT_PACKAGE := github.com/gihyodocker/todoapp
+ROOT_PACKAGE := github.com/gihyodocker/taskapp
 VERSION_PACKAGE := $(ROOT_PACKAGE)/pkg/version
 LDFLAG_VERSION := $(VERSION_PACKAGE).version
 

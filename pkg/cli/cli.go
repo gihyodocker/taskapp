@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/gihyodocker/todoapp/pkg/version"
+	"github.com/gihyodocker/taskapp/pkg/version"
 	"github.com/spf13/cobra"
 )
 

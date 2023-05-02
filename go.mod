@@ -1,4 +1,4 @@
-module github.com/gihyodocker/todoapp
+module github.com/gihyodocker/taskapp
 
 go 1.19
 

@@ -22,8 +22,8 @@ import (
 	"github.com/volatiletech/strmangle"
 )
 
-// Todo is an object representing the database table.
-type Todo struct { // ULID 26bytes
+// Task is an object representing the database table.
+type Task struct { // ULID 26bytes
 	ID string `boil:"id" json:"id" toml:"id" yaml:"id"`
 	// タイトル
 	Title string `boil:"title" json:"title" toml:"title" yaml:"title"`
@@ -36,11 +36,11 @@ type Todo struct { // ULID 26bytes
 	// 更新時間
 	Updated time.Time `boil:"updated" json:"updated" toml:"updated" yaml:"updated"`
 
-	R *todoR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L todoL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *taskR `boil:"-" json:"-" toml:"-" yaml:"-"`
+	L taskL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
-var TodoColumns = struct {
+var TaskColumns = struct {
 	ID      string
 	Title   string
 	Content string
@@ -56,7 +56,7 @@ var TodoColumns = struct {
 	Updated: "updated",
 }
 
-var TodoTableColumns = struct {
+var TaskTableColumns = struct {
 	ID      string
 	Title   string
 	Content string
@@ -64,12 +64,12 @@ var TodoTableColumns = struct {
 	Created string
 	Updated string
 }{
-	ID:      "todo.id",
-	Title:   "todo.title",
-	Content: "todo.content",
-	Status:  "todo.status",
-	Created: "todo.created",
-	Updated: "todo.updated",
+	ID:      "task.id",
+	Title:   "task.title",
+	Content: "task.content",
+	Status:  "task.status",
+	Created: "task.created",
+	Updated: "task.updated",
 }
 
 // Generated where
@@ -156,7 +156,7 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-var TodoWhere = struct {
+var TaskWhere = struct {
 	ID      whereHelperstring
 	Title   whereHelperstring
 	Content whereHelpernull_String
@@ -164,61 +164,61 @@ var TodoWhere = struct {
 	Created whereHelpertime_Time
 	Updated whereHelpertime_Time
 }{
-	ID:      whereHelperstring{field: "`todo`.`id`"},
-	Title:   whereHelperstring{field: "`todo`.`title`"},
-	Content: whereHelpernull_String{field: "`todo`.`content`"},
-	Status:  whereHelpernull_String{field: "`todo`.`status`"},
-	Created: whereHelpertime_Time{field: "`todo`.`created`"},
-	Updated: whereHelpertime_Time{field: "`todo`.`updated`"},
+	ID:      whereHelperstring{field: "`task`.`id`"},
+	Title:   whereHelperstring{field: "`task`.`title`"},
+	Content: whereHelpernull_String{field: "`task`.`content`"},
+	Status:  whereHelpernull_String{field: "`task`.`status`"},
+	Created: whereHelpertime_Time{field: "`task`.`created`"},
+	Updated: whereHelpertime_Time{field: "`task`.`updated`"},
 }
 
-// TodoRels is where relationship names are stored.
-var TodoRels = struct {
+// TaskRels is where relationship names are stored.
+var TaskRels = struct {
 }{}
 
-// todoR is where relationships are stored.
-type todoR struct {
+// taskR is where relationships are stored.
+type taskR struct {
 }
 
 // NewStruct creates a new relationship struct
-func (*todoR) NewStruct() *todoR {
-	return &todoR{}
+func (*taskR) NewStruct() *taskR {
+	return &taskR{}
 }
 
-// todoL is where Load methods for each relationship are stored.
-type todoL struct{}
+// taskL is where Load methods for each relationship are stored.
+type taskL struct{}
 
 var (
-	todoAllColumns            = []string{"id", "title", "content", "status", "created", "updated"}
-	todoColumnsWithoutDefault = []string{"id", "title", "content", "status", "created", "updated"}
-	todoColumnsWithDefault    = []string{}
-	todoPrimaryKeyColumns     = []string{"id"}
-	todoGeneratedColumns      = []string{}
+	taskAllColumns            = []string{"id", "title", "content", "status", "created", "updated"}
+	taskColumnsWithoutDefault = []string{"id", "title", "content", "status", "created", "updated"}
+	taskColumnsWithDefault    = []string{}
+	taskPrimaryKeyColumns     = []string{"id"}
+	taskGeneratedColumns      = []string{}
 )
 
 type (
-	// TodoSlice is an alias for a slice of pointers to Todo.
-	// This should almost always be used instead of []Todo.
-	TodoSlice []*Todo
-	// TodoHook is the signature for custom Todo hook methods
-	TodoHook func(context.Context, boil.ContextExecutor, *Todo) error
+	// TaskSlice is an alias for a slice of pointers to Task.
+	// This should almost always be used instead of []Task.
+	TaskSlice []*Task
+	// TaskHook is the signature for custom Task hook methods
+	TaskHook func(context.Context, boil.ContextExecutor, *Task) error
 
-	todoQuery struct {
+	taskQuery struct {
 		*queries.Query
 	}
 )
 
 // Cache for insert, update and upsert
 var (
-	todoType                 = reflect.TypeOf(&Todo{})
-	todoMapping              = queries.MakeStructMapping(todoType)
-	todoPrimaryKeyMapping, _ = queries.BindMapping(todoType, todoMapping, todoPrimaryKeyColumns)
-	todoInsertCacheMut       sync.RWMutex
-	todoInsertCache          = make(map[string]insertCache)
-	todoUpdateCacheMut       sync.RWMutex
-	todoUpdateCache          = make(map[string]updateCache)
-	todoUpsertCacheMut       sync.RWMutex
-	todoUpsertCache          = make(map[string]insertCache)
+	taskType                 = reflect.TypeOf(&Task{})
+	taskMapping              = queries.MakeStructMapping(taskType)
+	taskPrimaryKeyMapping, _ = queries.BindMapping(taskType, taskMapping, taskPrimaryKeyColumns)
+	taskInsertCacheMut       sync.RWMutex
+	taskInsertCache          = make(map[string]insertCache)
+	taskUpdateCacheMut       sync.RWMutex
+	taskUpdateCache          = make(map[string]updateCache)
+	taskUpsertCacheMut       sync.RWMutex
+	taskUpsertCache          = make(map[string]insertCache)
 )
 
 var (
@@ -229,27 +229,27 @@ var (
 	_ = qmhelper.Where
 )
 
-var todoAfterSelectHooks []TodoHook
+var taskAfterSelectHooks []TaskHook
 
-var todoBeforeInsertHooks []TodoHook
-var todoAfterInsertHooks []TodoHook
+var taskBeforeInsertHooks []TaskHook
+var taskAfterInsertHooks []TaskHook
 
-var todoBeforeUpdateHooks []TodoHook
-var todoAfterUpdateHooks []TodoHook
+var taskBeforeUpdateHooks []TaskHook
+var taskAfterUpdateHooks []TaskHook
 
-var todoBeforeDeleteHooks []TodoHook
-var todoAfterDeleteHooks []TodoHook
+var taskBeforeDeleteHooks []TaskHook
+var taskAfterDeleteHooks []TaskHook
 
-var todoBeforeUpsertHooks []TodoHook
-var todoAfterUpsertHooks []TodoHook
+var taskBeforeUpsertHooks []TaskHook
+var taskAfterUpsertHooks []TaskHook
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Todo) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoAfterSelectHooks {
+	for _, hook := range taskAfterSelectHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -259,12 +259,12 @@ func (o *Todo) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Todo) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoBeforeInsertHooks {
+	for _, hook := range taskBeforeInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -274,12 +274,12 @@ func (o *Todo) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Todo) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoAfterInsertHooks {
+	for _, hook := range taskAfterInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -289,12 +289,12 @@ func (o *Todo) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Todo) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoBeforeUpdateHooks {
+	for _, hook := range taskBeforeUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -304,12 +304,12 @@ func (o *Todo) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Todo) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoAfterUpdateHooks {
+	for _, hook := range taskAfterUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -319,12 +319,12 @@ func (o *Todo) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Todo) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoBeforeDeleteHooks {
+	for _, hook := range taskBeforeDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -334,12 +334,12 @@ func (o *Todo) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Todo) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoAfterDeleteHooks {
+	for _, hook := range taskAfterDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -349,12 +349,12 @@ func (o *Todo) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Todo) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoBeforeUpsertHooks {
+	for _, hook := range taskBeforeUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -364,12 +364,12 @@ func (o *Todo) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Todo) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Task) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range todoAfterUpsertHooks {
+	for _, hook := range taskAfterUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -378,33 +378,33 @@ func (o *Todo) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor
 	return nil
 }
 
-// AddTodoHook registers your hook function for all future operations.
-func AddTodoHook(hookPoint boil.HookPoint, todoHook TodoHook) {
+// AddTaskHook registers your hook function for all future operations.
+func AddTaskHook(hookPoint boil.HookPoint, taskHook TaskHook) {
 	switch hookPoint {
 	case boil.AfterSelectHook:
-		todoAfterSelectHooks = append(todoAfterSelectHooks, todoHook)
+		taskAfterSelectHooks = append(taskAfterSelectHooks, taskHook)
 	case boil.BeforeInsertHook:
-		todoBeforeInsertHooks = append(todoBeforeInsertHooks, todoHook)
+		taskBeforeInsertHooks = append(taskBeforeInsertHooks, taskHook)
 	case boil.AfterInsertHook:
-		todoAfterInsertHooks = append(todoAfterInsertHooks, todoHook)
+		taskAfterInsertHooks = append(taskAfterInsertHooks, taskHook)
 	case boil.BeforeUpdateHook:
-		todoBeforeUpdateHooks = append(todoBeforeUpdateHooks, todoHook)
+		taskBeforeUpdateHooks = append(taskBeforeUpdateHooks, taskHook)
 	case boil.AfterUpdateHook:
-		todoAfterUpdateHooks = append(todoAfterUpdateHooks, todoHook)
+		taskAfterUpdateHooks = append(taskAfterUpdateHooks, taskHook)
 	case boil.BeforeDeleteHook:
-		todoBeforeDeleteHooks = append(todoBeforeDeleteHooks, todoHook)
+		taskBeforeDeleteHooks = append(taskBeforeDeleteHooks, taskHook)
 	case boil.AfterDeleteHook:
-		todoAfterDeleteHooks = append(todoAfterDeleteHooks, todoHook)
+		taskAfterDeleteHooks = append(taskAfterDeleteHooks, taskHook)
 	case boil.BeforeUpsertHook:
-		todoBeforeUpsertHooks = append(todoBeforeUpsertHooks, todoHook)
+		taskBeforeUpsertHooks = append(taskBeforeUpsertHooks, taskHook)
 	case boil.AfterUpsertHook:
-		todoAfterUpsertHooks = append(todoAfterUpsertHooks, todoHook)
+		taskAfterUpsertHooks = append(taskAfterUpsertHooks, taskHook)
 	}
 }
 
-// One returns a single todo record from the query.
-func (q todoQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Todo, error) {
-	o := &Todo{}
+// One returns a single task record from the query.
+func (q taskQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Task, error) {
+	o := &Task{}
 
 	queries.SetLimit(q.Query, 1)
 
@@ -413,7 +413,7 @@ func (q todoQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Todo, e
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "model: failed to execute a one query for todo")
+		return nil, errors.Wrap(err, "model: failed to execute a one query for task")
 	}
 
 	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
@@ -423,16 +423,16 @@ func (q todoQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Todo, e
 	return o, nil
 }
 
-// All returns all Todo records from the query.
-func (q todoQuery) All(ctx context.Context, exec boil.ContextExecutor) (TodoSlice, error) {
-	var o []*Todo
+// All returns all Task records from the query.
+func (q taskQuery) All(ctx context.Context, exec boil.ContextExecutor) (TaskSlice, error) {
+	var o []*Task
 
 	err := q.Bind(ctx, exec, &o)
 	if err != nil {
-		return nil, errors.Wrap(err, "model: failed to assign all query results to Todo slice")
+		return nil, errors.Wrap(err, "model: failed to assign all query results to Task slice")
 	}
 
-	if len(todoAfterSelectHooks) != 0 {
+	if len(taskAfterSelectHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
@@ -443,8 +443,8 @@ func (q todoQuery) All(ctx context.Context, exec boil.ContextExecutor) (TodoSlic
 	return o, nil
 }
 
-// Count returns the count of all Todo records in the query.
-func (q todoQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+// Count returns the count of all Task records in the query.
+func (q taskQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -452,14 +452,14 @@ func (q todoQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64,
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: failed to count todo rows")
+		return 0, errors.Wrap(err, "model: failed to count task rows")
 	}
 
 	return count, nil
 }
 
 // Exists checks if the row exists in the table.
-func (q todoQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+func (q taskQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -468,58 +468,58 @@ func (q todoQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool,
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return false, errors.Wrap(err, "model: failed to check if todo exists")
+		return false, errors.Wrap(err, "model: failed to check if task exists")
 	}
 
 	return count > 0, nil
 }
 
-// Todos retrieves all the records using an executor.
-func Todos(mods ...qm.QueryMod) todoQuery {
-	mods = append(mods, qm.From("`todo`"))
+// Tasks retrieves all the records using an executor.
+func Tasks(mods ...qm.QueryMod) taskQuery {
+	mods = append(mods, qm.From("`task`"))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"`todo`.*"})
+		queries.SetSelect(q, []string{"`task`.*"})
 	}
 
-	return todoQuery{q}
+	return taskQuery{q}
 }
 
-// FindTodo retrieves a single record by ID with an executor.
+// FindTask retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindTodo(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Todo, error) {
-	todoObj := &Todo{}
+func FindTask(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Task, error) {
+	taskObj := &Task{}
 
 	sel := "*"
 	if len(selectCols) > 0 {
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from `todo` where `id`=?", sel,
+		"select %s from `task` where `id`=?", sel,
 	)
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(ctx, exec, todoObj)
+	err := q.Bind(ctx, exec, taskObj)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "model: unable to select from todo")
+		return nil, errors.Wrap(err, "model: unable to select from task")
 	}
 
-	if err = todoObj.doAfterSelectHooks(ctx, exec); err != nil {
-		return todoObj, err
+	if err = taskObj.doAfterSelectHooks(ctx, exec); err != nil {
+		return taskObj, err
 	}
 
-	return todoObj, nil
+	return taskObj, nil
 }
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Todo) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
+func (o *Task) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
-		return errors.New("model: no todo provided for insertion")
+		return errors.New("model: no task provided for insertion")
 	}
 
 	var err error
@@ -528,39 +528,39 @@ func (o *Todo) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(todoColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(taskColumnsWithDefault, o)
 
 	key := makeCacheKey(columns, nzDefaults)
-	todoInsertCacheMut.RLock()
-	cache, cached := todoInsertCache[key]
-	todoInsertCacheMut.RUnlock()
+	taskInsertCacheMut.RLock()
+	cache, cached := taskInsertCache[key]
+	taskInsertCacheMut.RUnlock()
 
 	if !cached {
 		wl, returnColumns := columns.InsertColumnSet(
-			todoAllColumns,
-			todoColumnsWithDefault,
-			todoColumnsWithoutDefault,
+			taskAllColumns,
+			taskColumnsWithDefault,
+			taskColumnsWithoutDefault,
 			nzDefaults,
 		)
 
-		cache.valueMapping, err = queries.BindMapping(todoType, todoMapping, wl)
+		cache.valueMapping, err = queries.BindMapping(taskType, taskMapping, wl)
 		if err != nil {
 			return err
 		}
-		cache.retMapping, err = queries.BindMapping(todoType, todoMapping, returnColumns)
+		cache.retMapping, err = queries.BindMapping(taskType, taskMapping, returnColumns)
 		if err != nil {
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO `todo` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO `task` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO `todo` () VALUES ()%s%s"
+			cache.query = "INSERT INTO `task` () VALUES ()%s%s"
 		}
 
 		var queryOutput, queryReturning string
 
 		if len(cache.retMapping) != 0 {
-			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `todo` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, todoPrimaryKeyColumns))
+			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `task` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, taskPrimaryKeyColumns))
 		}
 
 		cache.query = fmt.Sprintf(cache.query, queryOutput, queryReturning)
@@ -577,7 +577,7 @@ func (o *Todo) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 	_, err = exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "model: unable to insert into todo")
+		return errors.Wrap(err, "model: unable to insert into task")
 	}
 
 	var identifierCols []interface{}
@@ -597,50 +597,50 @@ func (o *Todo) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, identifierCols...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	if err != nil {
-		return errors.Wrap(err, "model: unable to populate default values for todo")
+		return errors.Wrap(err, "model: unable to populate default values for task")
 	}
 
 CacheNoHooks:
 	if !cached {
-		todoInsertCacheMut.Lock()
-		todoInsertCache[key] = cache
-		todoInsertCacheMut.Unlock()
+		taskInsertCacheMut.Lock()
+		taskInsertCache[key] = cache
+		taskInsertCacheMut.Unlock()
 	}
 
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// Update uses an executor to update the Todo.
+// Update uses an executor to update the Task.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Todo) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
+func (o *Task) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	var err error
 	if err = o.doBeforeUpdateHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
-	todoUpdateCacheMut.RLock()
-	cache, cached := todoUpdateCache[key]
-	todoUpdateCacheMut.RUnlock()
+	taskUpdateCacheMut.RLock()
+	cache, cached := taskUpdateCache[key]
+	taskUpdateCacheMut.RUnlock()
 
 	if !cached {
 		wl := columns.UpdateColumnSet(
-			todoAllColumns,
-			todoPrimaryKeyColumns,
+			taskAllColumns,
+			taskPrimaryKeyColumns,
 		)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
 		}
 		if len(wl) == 0 {
-			return 0, errors.New("model: unable to update todo, could not build whitelist")
+			return 0, errors.New("model: unable to update task, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE `todo` SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE `task` SET %s WHERE %s",
 			strmangle.SetParamNames("`", "`", 0, wl),
-			strmangle.WhereClause("`", "`", 0, todoPrimaryKeyColumns),
+			strmangle.WhereClause("`", "`", 0, taskPrimaryKeyColumns),
 		)
-		cache.valueMapping, err = queries.BindMapping(todoType, todoMapping, append(wl, todoPrimaryKeyColumns...))
+		cache.valueMapping, err = queries.BindMapping(taskType, taskMapping, append(wl, taskPrimaryKeyColumns...))
 		if err != nil {
 			return 0, err
 		}
@@ -656,42 +656,42 @@ func (o *Todo) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 	var result sql.Result
 	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to update todo row")
+		return 0, errors.Wrap(err, "model: unable to update task row")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: failed to get rows affected by update for todo")
+		return 0, errors.Wrap(err, "model: failed to get rows affected by update for task")
 	}
 
 	if !cached {
-		todoUpdateCacheMut.Lock()
-		todoUpdateCache[key] = cache
-		todoUpdateCacheMut.Unlock()
+		taskUpdateCacheMut.Lock()
+		taskUpdateCache[key] = cache
+		taskUpdateCacheMut.Unlock()
 	}
 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q todoQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (q taskQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to update all for todo")
+		return 0, errors.Wrap(err, "model: unable to update all for task")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to retrieve rows affected for todo")
+		return 0, errors.Wrap(err, "model: unable to retrieve rows affected for task")
 	}
 
 	return rowsAff, nil
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o TodoSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (o TaskSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -713,13 +713,13 @@ func (o TodoSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 
 	// Append all of the primary key values for each column
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), todoPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), taskPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE `todo` SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE `task` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, todoPrimaryKeyColumns, len(o)))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, taskPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -728,33 +728,33 @@ func (o TodoSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to update all in todo slice")
+		return 0, errors.Wrap(err, "model: unable to update all in task slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to retrieve rows affected all in update all todo")
+		return 0, errors.Wrap(err, "model: unable to retrieve rows affected all in update all task")
 	}
 	return rowsAff, nil
 }
 
-var mySQLTodoUniqueColumns = []string{
+var mySQLTaskUniqueColumns = []string{
 	"id",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Todo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
+func (o *Task) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
-		return errors.New("model: no todo provided for upsert")
+		return errors.New("model: no task provided for upsert")
 	}
 
 	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(todoColumnsWithDefault, o)
-	nzUniques := queries.NonZeroDefaultSet(mySQLTodoUniqueColumns, o)
+	nzDefaults := queries.NonZeroDefaultSet(taskColumnsWithDefault, o)
+	nzUniques := queries.NonZeroDefaultSet(mySQLTaskUniqueColumns, o)
 
 	if len(nzUniques) == 0 {
 		return errors.New("cannot upsert with a table that cannot conflict on a unique column")
@@ -782,43 +782,43 @@ func (o *Todo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 	key := buf.String()
 	strmangle.PutBuffer(buf)
 
-	todoUpsertCacheMut.RLock()
-	cache, cached := todoUpsertCache[key]
-	todoUpsertCacheMut.RUnlock()
+	taskUpsertCacheMut.RLock()
+	cache, cached := taskUpsertCache[key]
+	taskUpsertCacheMut.RUnlock()
 
 	var err error
 
 	if !cached {
 		insert, ret := insertColumns.InsertColumnSet(
-			todoAllColumns,
-			todoColumnsWithDefault,
-			todoColumnsWithoutDefault,
+			taskAllColumns,
+			taskColumnsWithDefault,
+			taskColumnsWithoutDefault,
 			nzDefaults,
 		)
 
 		update := updateColumns.UpdateColumnSet(
-			todoAllColumns,
-			todoPrimaryKeyColumns,
+			taskAllColumns,
+			taskPrimaryKeyColumns,
 		)
 
 		if !updateColumns.IsNone() && len(update) == 0 {
-			return errors.New("model: unable to upsert todo, could not build update column list")
+			return errors.New("model: unable to upsert task, could not build update column list")
 		}
 
 		ret = strmangle.SetComplement(ret, nzUniques)
-		cache.query = buildUpsertQueryMySQL(dialect, "`todo`", update, insert)
+		cache.query = buildUpsertQueryMySQL(dialect, "`task`", update, insert)
 		cache.retQuery = fmt.Sprintf(
-			"SELECT %s FROM `todo` WHERE %s",
+			"SELECT %s FROM `task` WHERE %s",
 			strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, ret), ","),
 			strmangle.WhereClause("`", "`", 0, nzUniques),
 		)
 
-		cache.valueMapping, err = queries.BindMapping(todoType, todoMapping, insert)
+		cache.valueMapping, err = queries.BindMapping(taskType, taskMapping, insert)
 		if err != nil {
 			return err
 		}
 		if len(ret) != 0 {
-			cache.retMapping, err = queries.BindMapping(todoType, todoMapping, ret)
+			cache.retMapping, err = queries.BindMapping(taskType, taskMapping, ret)
 			if err != nil {
 				return err
 			}
@@ -840,7 +840,7 @@ func (o *Todo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 	_, err = exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "model: unable to upsert for todo")
+		return errors.Wrap(err, "model: unable to upsert for task")
 	}
 
 	var uniqueMap []uint64
@@ -850,9 +850,9 @@ func (o *Todo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 		goto CacheNoHooks
 	}
 
-	uniqueMap, err = queries.BindMapping(todoType, todoMapping, nzUniques)
+	uniqueMap, err = queries.BindMapping(taskType, taskMapping, nzUniques)
 	if err != nil {
-		return errors.Wrap(err, "model: unable to retrieve unique values for todo")
+		return errors.Wrap(err, "model: unable to retrieve unique values for task")
 	}
 	nzUniqueCols = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), uniqueMap)
 
@@ -863,32 +863,32 @@ func (o *Todo) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, nzUniqueCols...).Scan(returns...)
 	if err != nil {
-		return errors.Wrap(err, "model: unable to populate default values for todo")
+		return errors.Wrap(err, "model: unable to populate default values for task")
 	}
 
 CacheNoHooks:
 	if !cached {
-		todoUpsertCacheMut.Lock()
-		todoUpsertCache[key] = cache
-		todoUpsertCacheMut.Unlock()
+		taskUpsertCacheMut.Lock()
+		taskUpsertCache[key] = cache
+		taskUpsertCacheMut.Unlock()
 	}
 
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// Delete deletes a single Todo record with an executor.
+// Delete deletes a single Task record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Todo) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o *Task) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
-		return 0, errors.New("model: no Todo provided for delete")
+		return 0, errors.New("model: no Task provided for delete")
 	}
 
 	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
-	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), todoPrimaryKeyMapping)
-	sql := "DELETE FROM `todo` WHERE `id`=?"
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), taskPrimaryKeyMapping)
+	sql := "DELETE FROM `task` WHERE `id`=?"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -897,12 +897,12 @@ func (o *Todo) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, er
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to delete from todo")
+		return 0, errors.Wrap(err, "model: unable to delete from task")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: failed to get rows affected by delete for todo")
+		return 0, errors.Wrap(err, "model: failed to get rows affected by delete for task")
 	}
 
 	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
@@ -913,33 +913,33 @@ func (o *Todo) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, er
 }
 
 // DeleteAll deletes all matching rows.
-func (q todoQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (q taskQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
-		return 0, errors.New("model: no todoQuery provided for delete all")
+		return 0, errors.New("model: no taskQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to delete all from todo")
+		return 0, errors.Wrap(err, "model: unable to delete all from task")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: failed to get rows affected by deleteall for todo")
+		return 0, errors.Wrap(err, "model: failed to get rows affected by deleteall for task")
 	}
 
 	return rowsAff, nil
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o TodoSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o TaskSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
-	if len(todoBeforeDeleteHooks) != 0 {
+	if len(taskBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -949,12 +949,12 @@ func (o TodoSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 
 	var args []interface{}
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), todoPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), taskPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM `todo` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, todoPrimaryKeyColumns, len(o))
+	sql := "DELETE FROM `task` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, taskPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -963,15 +963,15 @@ func (o TodoSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "model: unable to delete all from todo slice")
+		return 0, errors.Wrap(err, "model: unable to delete all from task slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "model: failed to get rows affected by deleteall for todo")
+		return 0, errors.Wrap(err, "model: failed to get rows affected by deleteall for task")
 	}
 
-	if len(todoAfterDeleteHooks) != 0 {
+	if len(taskAfterDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -984,8 +984,8 @@ func (o TodoSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Todo) Reload(ctx context.Context, exec boil.ContextExecutor) error {
-	ret, err := FindTodo(ctx, exec, o.ID)
+func (o *Task) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindTask(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -996,26 +996,26 @@ func (o *Todo) Reload(ctx context.Context, exec boil.ContextExecutor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *TodoSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
+func (o *TaskSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
 
-	slice := TodoSlice{}
+	slice := TaskSlice{}
 	var args []interface{}
 	for _, obj := range *o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), todoPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), taskPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT `todo`.* FROM `todo` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, todoPrimaryKeyColumns, len(*o))
+	sql := "SELECT `task`.* FROM `task` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, taskPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
 	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
-		return errors.Wrap(err, "model: unable to reload all in TodoSlice")
+		return errors.Wrap(err, "model: unable to reload all in TaskSlice")
 	}
 
 	*o = slice
@@ -1023,10 +1023,10 @@ func (o *TodoSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 	return nil
 }
 
-// TodoExists checks if the Todo row exists.
-func TodoExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
+// TaskExists checks if the Task row exists.
+func TaskExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from `todo` where `id`=? limit 1)"
+	sql := "select exists(select 1 from `task` where `id`=? limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1037,13 +1037,13 @@ func TodoExists(ctx context.Context, exec boil.ContextExecutor, iD string) (bool
 
 	err := row.Scan(&exists)
 	if err != nil {
-		return false, errors.Wrap(err, "model: unable to check if todo exists")
+		return false, errors.Wrap(err, "model: unable to check if task exists")
 	}
 
 	return exists, nil
 }
 
-// Exists checks if the Todo row exists.
-func (o *Todo) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
-	return TodoExists(ctx, exec, o.ID)
+// Exists checks if the Task row exists.
+func (o *Task) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+	return TaskExists(ctx, exec, o.ID)
 }

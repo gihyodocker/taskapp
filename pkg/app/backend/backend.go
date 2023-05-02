@@ -3,7 +3,7 @@ package backend
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/gihyodocker/todoapp/pkg/app/backend/server"
+	"github.com/gihyodocker/taskapp/pkg/app/backend/server"
 )
 
 var Command = &cobra.Command{

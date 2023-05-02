@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/gihyodocker/todoapp/pkg/cli"
-	"github.com/gihyodocker/todoapp/pkg/server"
+	"github.com/gihyodocker/taskapp/pkg/cli"
+	"github.com/gihyodocker/taskapp/pkg/server"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"

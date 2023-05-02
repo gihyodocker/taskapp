@@ -3,7 +3,7 @@ package web
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/gihyodocker/todoapp/pkg/app/web/server"
+	"github.com/gihyodocker/taskapp/pkg/app/web/server"
 )
 
 var Command = &cobra.Command{
