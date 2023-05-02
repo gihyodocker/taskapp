@@ -51,17 +51,17 @@ func makeCacheKey(cols boil.Columns, nzDefaults []string) string {
 	return str
 }
 
-// Enum values for TodoStatus
+// Enum values for TaskStatus
 const (
-	TodoStatusTODO     string = "TODO"
-	TodoStatusPROGRESS string = "PROGRESS"
-	TodoStatusDONE     string = "DONE"
+	TaskStatusBACKLOG  string = "BACKLOG"
+	TaskStatusPROGRESS string = "PROGRESS"
+	TaskStatusDONE     string = "DONE"
 )
 
-func AllTodoStatus() []string {
+func AllTaskStatus() []string {
 	return []string{
-		TodoStatusTODO,
-		TodoStatusPROGRESS,
-		TodoStatusDONE,
+		TaskStatusBACKLOG,
+		TaskStatusPROGRESS,
+		TaskStatusDONE,
 	}
 }

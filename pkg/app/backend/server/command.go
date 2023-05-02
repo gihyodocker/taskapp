@@ -8,8 +8,8 @@ import (
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/gihyodocker/todoapp/pkg/cli"
-	"github.com/gihyodocker/todoapp/pkg/server"
+	"github.com/gihyodocker/taskapp/pkg/cli"
+	"github.com/gihyodocker/taskapp/pkg/server"
 )
 
 type command struct {

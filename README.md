@@ -1,2 +1,2 @@
-# todoapp
-Monorepo of TODO application
+# taskapp
+Monorepo of simple task management application

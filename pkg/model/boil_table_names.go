@@ -4,7 +4,7 @@
 package model
 
 var TableNames = struct {
-	Todo string
+	Task string
 }{
-	Todo: "todo",
+	Task: "task",
 }

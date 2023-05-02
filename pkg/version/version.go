@@ -19,5 +19,5 @@ func Get() Info {
 }
 
 func (i Info) String() string {
-	return fmt.Sprintf("todoapp version: %s", i.Version)
+	return fmt.Sprintf("taskapp version: %s", i.Version)
 }
