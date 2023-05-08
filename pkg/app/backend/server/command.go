@@ -2,8 +2,11 @@ package server
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/gihyodocker/taskapp/pkg/config"
+	"github.com/gihyodocker/taskapp/pkg/db"
+	"github.com/gihyodocker/taskapp/pkg/repository"
 	"time"
 
 	"github.com/gihyodocker/taskapp/pkg/cli"
@@ -46,8 +49,17 @@ func (c *command) execute(ctx context.Context) error {
 		)
 		return err
 	}
-	// TODO Use appConfig
-	fmt.Println(appConfig)
+	// TODO Validate Config
+	// Open MySQL connection
+	dbConn, err := createMySQL(*appConfig.Database)
+	if err != nil {
+		slog.Error("failed to open MySQL connection", err)
+		return err
+	}
+
+	// Initialize repositories
+	_ = repository.NewTask(dbConn)
+	fmt.Println(dbConn)
 
 	options := []server.Option{
 		server.WithGracePeriod(c.gracePeriod),
@@ -62,4 +74,15 @@ func (c *command) execute(ctx context.Context) error {
 		return err
 	}
 	return nil
+}
+
+func createMySQL(conf config.Database) (*sql.DB, error) {
+	options := []db.Option{
+		db.WithMaxIdleConns(conf.MaxIdleConns),
+		db.WithMaxOpenConns(conf.MaxOpenConns),
+		db.WithConnMaxLifetime(conf.ConnMaxLifetime),
+	}
+
+	ds := db.NewMySQLDatasource(conf.Username, conf.Password, conf.Host, conf.DBName)
+	return db.OpenDB(ds, options...)
 }

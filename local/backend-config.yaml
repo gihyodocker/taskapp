@@ -1,0 +1,8 @@
+database:
+  host: localhost
+  username: root
+  password: password
+  dbname: taskapp
+  maxIdleConns: 5
+  maxOpenConns: 10
+  connMaxLifetime: 1h
