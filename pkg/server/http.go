@@ -43,6 +43,16 @@ func NewHTTPServer(port int, opts ...Option) *HTTPServer {
 	return s
 }
 
+func (s *HTTPServer) Handle(pattern string, handler http.Handler) {
+	s.patterns = append(s.patterns, pattern)
+	s.mux.Handle(pattern, handler)
+}
+
+func (s *HTTPServer) HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	s.patterns = append(s.patterns, pattern)
+	s.mux.HandleFunc(pattern, handler)
+}
+
 func (s *HTTPServer) Serve(ctx context.Context) error {
 	doneCh := make(chan error, 1)
 	ctx, cancel := context.WithCancel(ctx)

@@ -2,13 +2,15 @@ package server
 
 import (
 	"context"
+	"net/http"
 	"time"
 
-	"github.com/gihyodocker/taskapp/pkg/cli"
-	"github.com/gihyodocker/taskapp/pkg/server"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"
+
+	"github.com/gihyodocker/taskapp/pkg/cli"
+	"github.com/gihyodocker/taskapp/pkg/server"
 )
 
 type command struct {
@@ -38,6 +40,9 @@ func (c *command) execute(ctx context.Context) error {
 		server.WithGracePeriod(c.gracePeriod),
 	}
 	httpServer := server.NewHTTPServer(c.port, options...)
+	httpServer.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 	group.Go(func() error {
 		return httpServer.Serve(ctx)
 	})
