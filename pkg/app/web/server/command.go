@@ -40,7 +40,7 @@ func (c *command) execute(ctx context.Context) error {
 		server.WithGracePeriod(c.gracePeriod),
 	}
 	httpServer := server.NewHTTPServer(c.port, options...)
-	httpServer.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
 	group.Go(func() error {

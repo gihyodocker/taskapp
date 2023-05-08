@@ -14,7 +14,6 @@ type HTTPServer struct {
 	port        int
 	mux         *chi.Mux
 	server      *http.Server
-	patterns    []string
 	gracePeriod time.Duration
 }
 
@@ -43,14 +42,20 @@ func NewHTTPServer(port int, opts ...Option) *HTTPServer {
 	return s
 }
 
-func (s *HTTPServer) Handle(pattern string, handler http.Handler) {
-	s.patterns = append(s.patterns, pattern)
-	s.mux.Handle(pattern, handler)
+func (s *HTTPServer) Get(pattern string, handlerFn http.HandlerFunc) {
+	s.mux.Get(pattern, handlerFn)
 }
 
-func (s *HTTPServer) HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request)) {
-	s.patterns = append(s.patterns, pattern)
-	s.mux.HandleFunc(pattern, handler)
+func (s *HTTPServer) Post(pattern string, handlerFn http.HandlerFunc) {
+	s.mux.Post(pattern, handlerFn)
+}
+
+func (s *HTTPServer) Put(pattern string, handlerFn http.HandlerFunc) {
+	s.mux.Put(pattern, handlerFn)
+}
+
+func (s *HTTPServer) Delete(pattern string, handlerFn http.HandlerFunc) {
+	s.mux.Delete(pattern, handlerFn)
 }
 
 func (s *HTTPServer) Serve(ctx context.Context) error {

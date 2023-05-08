@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/gihyodocker/taskapp/pkg/app/backend/handler"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 	"github.com/gihyodocker/taskapp/pkg/config"
 	"github.com/gihyodocker/taskapp/pkg/db"
@@ -60,16 +60,20 @@ func (c *command) execute(ctx context.Context) error {
 	}
 
 	// Initialize repositories
-	_ = repository.NewTask(dbConn)
-	fmt.Println(dbConn)
+	taskRepo := repository.NewTask(dbConn)
+
+	// Handlers
+	taskHandler := handler.NewTask(taskRepo)
 
 	options := []server.Option{
 		server.WithGracePeriod(c.gracePeriod),
 	}
 	httpServer := server.NewHTTPServer(c.port, options...)
-	httpServer.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
+	httpServer.Get("/api/tasks/{id}", taskHandler.Get)
+
 	group.Go(func() error {
 		return httpServer.Serve(ctx)
 	})
