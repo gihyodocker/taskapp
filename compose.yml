@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: taskapp
+      MYSQL_USER: taskapp_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_user_password
+    secrets:
+      - mysql_root_password
+      - mysql_user_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password
+  mysql_user_password:
+    file: ./secrets/mysql_user_password
+
+volumes:
+  mysql_data:

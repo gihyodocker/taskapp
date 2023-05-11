@@ -16,7 +16,7 @@ DB_HOST ?= localhost
 DB_PORT ?= 3306
 DB_NAME ?= taskapp
 DB_USERNAME ?= taskapp_user
-DB_PASSWORD ?= password
+DB_PASSWORD ?= $(shell cat ./secrets/mysql_user_password)
 
 ROOT_PACKAGE := github.com/gihyodocker/taskapp
 VERSION_PACKAGE := $(ROOT_PACKAGE)/pkg/version
@@ -76,3 +76,8 @@ build:
 	CGO_ENABLED=0 GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go build -ldflags "-s -w -X $(LDFLAG_VERSION)=$(GIT_COMMIT)" \
 		-o ./bin/$* -mod=vendor main.go
+
+.PHONY: make-mysql-passwords
+make-mysql-passwords:
+	@openssl rand -base64 32 > ./secrets/mysql_root_password
+	@openssl rand -base64 32 > ./secrets/mysql_user_password
