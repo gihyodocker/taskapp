@@ -15,11 +15,25 @@ services:
     ports:
       - "3306:3306"
 
+  backend:
+    build:
+      context: .
+    command:
+      - "server"
+      - "--config-file"
+      - "/run/secrets/backend_config"
+    secrets:
+      - backend_config
+    ports:
+      - "9180:8180"
+
 secrets:
   mysql_root_password:
     file: ./secrets/mysql_root_password
   mysql_user_password:
     file: ./secrets/mysql_user_password
+  backend_config:
+    file: ./backend-config-compose.yaml
 
 volumes:
   mysql_data:
