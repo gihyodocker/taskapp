@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gihyodocker/taskapp/pkg/app/backend"
+	"github.com/gihyodocker/taskapp/pkg/app/mysql"
 	"github.com/gihyodocker/taskapp/pkg/app/web"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 )
@@ -13,6 +14,7 @@ func main() {
 	c := cli.NewCLI("taskapp", "Simple task management application")
 	c.AddCommands(backend.Command)
 	c.AddCommands(web.Command)
+	c.AddCommands(mysql.Command)
 	if err := c.Execute(); err != nil {
 		log.Fatal(err)
 	}
