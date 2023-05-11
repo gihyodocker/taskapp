@@ -80,3 +80,19 @@ build:
 .PHONY: make-mysql-passwords
 make-mysql-passwords:
 	@go run main.go mysql generate-password
+
+define BACKEND_CONFIG
+database:
+  host: $(DB_HOST)
+  username: $(DB_USERNAME)
+  password: $(DB_PASSWORD)
+  dbname: $(DB_NAME)
+  maxIdleConns: 5
+  maxOpenConns: 10
+  connMaxLifetime: 1h
+endef
+export BACKEND_CONFIG
+
+.PHONY: backend-config-local.yaml
+backend-config-local.yaml:
+	@echo "$$BACKEND_CONFIG" > $@
