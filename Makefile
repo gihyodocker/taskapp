@@ -81,18 +81,15 @@ build:
 make-mysql-passwords:
 	@go run main.go mysql generate-password
 
-define BACKEND_CONFIG
-database:
-  host: $(DB_HOST)
-  username: $(DB_USERNAME)
-  password: $(DB_PASSWORD)
-  dbname: $(DB_NAME)
-  maxIdleConns: 5
-  maxOpenConns: 10
-  connMaxLifetime: 1h
-endef
-export BACKEND_CONFIG
-
 .PHONY: backend-config-local.yaml
 backend-config-local.yaml:
-	@echo "$$BACKEND_CONFIG" > $@
+	@go run main.go backend config \
+		--database-password $(shell cat ./secrets/mysql_user_password) \
+		--output-file ./backend-config-local.yaml
+
+.PHONY: backend-config-compose.yaml
+backend-config-compose.yaml:
+	@go run main.go backend config \
+		--database-host mysql \
+		--database-password $(shell cat ./secrets/mysql_user_password) \
+		--output-file ./backend-config-compose.yaml

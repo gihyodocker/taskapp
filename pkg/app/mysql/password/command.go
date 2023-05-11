@@ -35,7 +35,7 @@ func NewCommand() *cobra.Command {
 func (c *command) execute(ctx context.Context) error {
 	pwd, err := os.Getwd()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	rootPassword, err := makePassword(16)

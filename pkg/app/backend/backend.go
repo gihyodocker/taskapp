@@ -3,6 +3,7 @@ package backend
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/gihyodocker/taskapp/pkg/app/backend/config"
 	"github.com/gihyodocker/taskapp/pkg/app/backend/server"
 )
 
@@ -14,4 +15,5 @@ var Command = &cobra.Command{
 
 func init() {
 	Command.AddCommand(server.NewCommand())
+	Command.AddCommand(config.NewCommand())
 }
