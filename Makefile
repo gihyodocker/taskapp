@@ -79,5 +79,4 @@ build:
 
 .PHONY: make-mysql-passwords
 make-mysql-passwords:
-	@openssl rand -base64 32 > ./secrets/mysql_root_password
-	@openssl rand -base64 32 > ./secrets/mysql_user_password
+	@go run main.go mysql generate-password
