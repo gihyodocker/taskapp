@@ -24,4 +24,4 @@ vendor/
 .DS_Store
 
 /secrets
-backend-config-local.yaml
+backend-config-*.yaml
