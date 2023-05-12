@@ -34,7 +34,7 @@ func NewCommand() *cobra.Command {
 		Short: "Start up the backend server",
 		RunE:  cli.WithContext(c.execute),
 	}
-	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP server.")
+	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP backend.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	cmd.Flags().StringVar(&c.configFile, "config-file", c.configFile, "The path to the config file.")
 	return cmd
