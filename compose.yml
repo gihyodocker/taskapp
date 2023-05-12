@@ -18,6 +18,9 @@ services:
   backend:
     build:
       context: .
+      dockerfile: Dockerfile.backend
+    depends_on:
+      - mysql
     command:
       - "server"
       - "--config-file"
@@ -26,6 +29,19 @@ services:
       - backend_config
     ports:
       - "9180:8180"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    depends_on:
+      - backend
+    command:
+      - "server"
+      - "--backend-api-address"
+      - "http://backend:8180"
+    ports:
+      - "9280:8280"
 
 secrets:
   mysql_root_password:

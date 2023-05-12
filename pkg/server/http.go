@@ -73,9 +73,9 @@ func (s *HTTPServer) Serve(ctx context.Context) error {
 }
 
 func (s *HTTPServer) run() error {
-	slog.Info(fmt.Sprintf("http server is running on %d", s.port))
+	slog.Info(fmt.Sprintf("http backend is running on %d", s.port))
 	if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		slog.Error("failed to listen and serve http server", err)
+		slog.Error("failed to listen and serve http backend", err)
 		return err
 	}
 	return nil
@@ -84,9 +84,9 @@ func (s *HTTPServer) run() error {
 func (s *HTTPServer) stop() error {
 	ctx, cancel := context.WithTimeout(context.Background(), s.gracePeriod)
 	defer cancel()
-	slog.Info("stopping http server")
+	slog.Info("stopping http backend")
 	if err := s.server.Shutdown(ctx); err != nil {
-		slog.Error("failed to shutdown http server", err)
+		slog.Error("failed to shutdown http backend", err)
 		return err
 	}
 	return nil

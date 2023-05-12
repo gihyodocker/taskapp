@@ -11,6 +11,9 @@ ifndef GOOS
 	GOOS := $(shell go env GOOS)
 endif
 
+COMMAND_DIRS := $(wildcard cmd/*)
+BUILD_TARGETS := $(addprefix build-,$(notdir $(COMMAND_DIRS)))
+
 # Database variables
 DB_HOST ?= localhost
 DB_PORT ?= 3306
@@ -70,12 +73,12 @@ generate-db-model: sqlboiler.toml
 	@sqlboiler mysql --no-tests
 	@rm sqlboiler.toml
 
-.PHONY: build
-build:
+.PHONY: $(BUILD_TARGETS)
+$(BUILD_TARGETS): build-%:
 	$(eval GIT_COMMIT := $(shell git describe --tags --always))
 	CGO_ENABLED=0 GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
 		go build -ldflags "-s -w -X $(LDFLAG_VERSION)=$(GIT_COMMIT)" \
-		-o ./bin/$* -mod=vendor main.go
+		-o ./bin/$* -mod=vendor cmd/$*/main.go
 
 .PHONY: make-mysql-passwords
 make-mysql-passwords:

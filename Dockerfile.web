@@ -4,6 +4,6 @@ WORKDIR /go/src/github.com/gihyodocker/taskapp
 COPY . .
 
 RUN make mod
-RUN make build
+RUN make build-web
 
-ENTRYPOINT ["./bin/main", "backend"]
+ENTRYPOINT ["./bin/web"]
