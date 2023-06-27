@@ -13,13 +13,14 @@ endif
 
 COMMAND_DIRS := $(wildcard cmd/*)
 BUILD_TARGETS := $(addprefix build-,$(notdir $(COMMAND_DIRS)))
+MYSQL_PASSWORD_PATH := ./secrets/mysql_user_password
 
 # Database variables
 DB_HOST ?= localhost
 DB_PORT ?= 3306
 DB_NAME ?= taskapp
 DB_USERNAME ?= taskapp_user
-DB_PASSWORD ?= $(shell cat ./secrets/mysql_user_password)
+DB_PASSWORD := $(shell if [ -f $(MYSQL_PASSWORD_PATH) ]; then cat $(MYSQL_PASSWORD_PATH); else echo "password"; fi )
 
 ROOT_PACKAGE := github.com/gihyodocker/taskapp
 VERSION_PACKAGE := $(ROOT_PACKAGE)/pkg/version
@@ -82,17 +83,17 @@ $(BUILD_TARGETS): build-%:
 
 .PHONY: make-mysql-passwords
 make-mysql-passwords:
-	@go run main.go mysql generate-password
+	@go run cmd/tools/main.go mysql generate-password
 
-.PHONY: backend-config-local.yaml
-backend-config-local.yaml:
-	@go run main.go backend config \
-		--database-password $(shell cat ./secrets/mysql_user_password) \
-		--output-file ./backend-config-local.yaml
+.PHONY: api-config-local.yaml
+api-config-local.yaml:
+	@go run cmd/api/main.go config \
+		--database-password $(DB_PASSWORD) \
+		--output-file ./api-config-local.yaml
 
-.PHONY: backend-config-compose.yaml
-backend-config-compose.yaml:
-	@go run main.go backend config \
+.PHONY: api-config-compose.yaml
+api-config-compose.yaml:
+	@go run cmd/api/main.go config \
 		--database-host mysql \
-		--database-password $(shell cat ./secrets/mysql_user_password) \
-		--output-file ./backend-config-compose.yaml
+		--database-password $(DB_PASSWORD) \
+		--output-file ./api-config-compose.yaml

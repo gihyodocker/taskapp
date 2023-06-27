@@ -3,13 +3,13 @@ package main
 import (
 	"log"
 
-	"github.com/gihyodocker/taskapp/pkg/app/backend/config"
-	"github.com/gihyodocker/taskapp/pkg/app/backend/server"
+	"github.com/gihyodocker/taskapp/pkg/app/api/config"
+	"github.com/gihyodocker/taskapp/pkg/app/api/server"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 )
 
 func main() {
-	c := cli.NewCLI("taskapp-backend", "The backend API application of taskapp")
+	c := cli.NewCLI("taskapp-api", "The api API application of taskapp")
 	c.AddCommands(
 		server.NewCommand(),
 		config.NewCommand(),

@@ -15,18 +15,18 @@ services:
     ports:
       - "3306:3306"
 
-  backend:
+  api:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: Dockerfile.api
     depends_on:
       - mysql
     command:
       - "server"
       - "--config-file"
-      - "/run/secrets/backend_config"
+      - "/run/secrets/api_config"
     secrets:
-      - backend_config
+      - api_config
     ports:
       - "9180:8180"
 
@@ -35,11 +35,11 @@ services:
       context: .
       dockerfile: Dockerfile.web
     depends_on:
-      - backend
+      - api
     command:
       - "server"
-      - "--backend-api-address"
-      - "http://backend:8180"
+      - "--api-api-address"
+      - "http://api:8180"
     ports:
       - "9280:8280"
 
@@ -63,8 +63,8 @@ secrets:
     file: ./secrets/mysql_root_password
   mysql_user_password:
     file: ./secrets/mysql_user_password
-  backend_config:
-    file: ./backend-config-compose.yaml
+  api_config:
+    file: ./api-config-compose.yaml
 
 volumes:
   mysql_data:
