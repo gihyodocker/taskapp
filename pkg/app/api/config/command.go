@@ -22,7 +22,7 @@ type command struct {
 
 func NewCommand() *cobra.Command {
 	c := &command{
-		outputFile: "backend-config-local.yaml",
+		outputFile: "api-config-local.yaml",
 		database: &config.Database{
 			Host:            "127.0.0.1",
 			Username:        "taskapp_user",
@@ -34,7 +34,7 @@ func NewCommand() *cobra.Command {
 	}
 	cmd := &cobra.Command{
 		Use:   "config",
-		Short: "Generate the backend configuration file",
+		Short: "Generate the api configuration file",
 		RunE:  cli.WithContext(c.execute),
 	}
 	cmd.Flags().StringVar(&c.outputFile, "output-file", c.outputFile, "The config file output filename")
@@ -67,10 +67,10 @@ func (c *command) execute(ctx context.Context) error {
 
 	outputPath := filepath.Join(pwd, c.outputFile)
 	if err := os.WriteFile(filepath.Join(pwd, c.outputFile), data, 0644); err != nil {
-		slog.Error("failed to write backend config file", err)
+		slog.Error("failed to write api config file", err)
 		return err
 	}
 
-	slog.Info("Completed generating the backend config file.", slog.String("outputPath", outputPath))
+	slog.Info("Completed generating the api config file.", slog.String("outputPath", outputPath))
 	return nil
 }

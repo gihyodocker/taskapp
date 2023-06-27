@@ -10,7 +10,7 @@ import (
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/gihyodocker/taskapp/pkg/app/backend/handler"
+	"github.com/gihyodocker/taskapp/pkg/app/api/handler"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 	"github.com/gihyodocker/taskapp/pkg/config"
 	"github.com/gihyodocker/taskapp/pkg/db"
@@ -31,10 +31,10 @@ func NewCommand() *cobra.Command {
 	}
 	cmd := &cobra.Command{
 		Use:   "server",
-		Short: "Start up the backend server",
+		Short: "Start up the api server",
 		RunE:  cli.WithContext(c.execute),
 	}
-	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP backend.")
+	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	cmd.Flags().StringVar(&c.configFile, "config-file", c.configFile, "The path to the config file.")
 	return cmd

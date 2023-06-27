@@ -19,9 +19,11 @@ vendor/
 .idea/**/tasks.xml
 
 # Build binary directory
-/bin
+/bin/*
 
 .DS_Store
 
-/secrets
-backend-config-*.yaml
+/secrets/*
+!.gitkeep
+
+api-config-*.yaml
