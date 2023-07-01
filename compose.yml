@@ -1,5 +1,6 @@
 version: '3.9'
 services:
+
   mysql:
     image: mysql:8.0.33
     environment:
@@ -14,6 +15,26 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  migrator:
+    build:
+      context: ./containers/migrator
+    depends_on:
+      - mysql
+    working_dir: /migrator
+    environment:
+      DB_HOST: mysql
+      DB_NAME: taskapp
+      DB_PORT: "3306"
+      DB_USERNAME: taskapp_user
+    command: >
+        sh -c '
+            DB_PASSWORD=$(cat /run/secrets/mysql_user_password)
+            echo $$DB_PASSWORD
+            bash /migrator/migrate.sh $$DB_HOST $$DB_PORT $$DB_NAME $$DB_USERNAME $$DB_PASSWORD up
+        '
+    secrets:
+      - mysql_user_password
 
   api:
     build:
