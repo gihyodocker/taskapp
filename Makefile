@@ -83,6 +83,7 @@ $(BUILD_TARGETS): build-%:
 
 .PHONY: make-mysql-passwords
 make-mysql-passwords:
+	@mkdir -p ./secrets
 	@go run cmd/tools/main.go mysql generate-password
 
 .PHONY: api-config-local.yaml
