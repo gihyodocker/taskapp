@@ -2,7 +2,8 @@ version: '3.9'
 services:
 
   mysql:
-    image: mysql:8.0.33
+    build:
+      context: ./containers/mysql
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_DATABASE: taskapp
