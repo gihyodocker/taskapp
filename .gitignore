@@ -24,6 +24,5 @@ vendor/
 .DS_Store
 
 /secrets/*
-!.gitkeep
 
 api-config-*.yaml
