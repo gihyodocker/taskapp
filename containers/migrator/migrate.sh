@@ -23,5 +23,4 @@ until mysql -h $db_host -P $db_port -u $db_username -p$db_password -e "show data
 done
 echo "MySQL is up - executing command"
 
-migrate -source file://./history \
-  -database mysql://$db_username:$db_password@tcp\($db_host:$db_port\)/$db_name $command
+migrate -path ./history -database mysql://$db_username:$db_password@tcp\($db_host:$db_port\)/$db_name $command
