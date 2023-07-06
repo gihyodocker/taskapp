@@ -22,7 +22,6 @@ services:
       context: ./containers/migrator
     depends_on:
       - mysql
-    working_dir: /migrator
     environment:
       DB_HOST: mysql
       DB_NAME: taskapp
