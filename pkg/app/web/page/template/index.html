@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Task Management Application by gihyodocker</title>
+</head>
+
+<body>
+    Hello, Container!
+    <div>
+        <ul>
+            {{ range . }}
+            <li>{{ .Title }}</li>
+            {{ end }}
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"github.com/gihyodocker/taskapp/pkg/app/web/client"
+	"github.com/gihyodocker/taskapp/pkg/app/web/page"
 	"net/http"
 	"time"
 
@@ -14,16 +16,16 @@ import (
 )
 
 type command struct {
-	port              int
-	backendAPIAddress string
-	gracePeriod       time.Duration
+	port        int
+	apiAddress  string
+	gracePeriod time.Duration
 }
 
 func NewCommand() *cobra.Command {
 	c := &command{
-		port:              8280,
-		backendAPIAddress: "http://127.0.0.1:8180",
-		gracePeriod:       5 * time.Second,
+		port:        8280,
+		apiAddress:  "http://127.0.0.1:8180",
+		gracePeriod: 5 * time.Second,
 	}
 	cmd := &cobra.Command{
 		Use:   "server",
@@ -31,7 +33,7 @@ func NewCommand() *cobra.Command {
 		RunE:  cli.WithContext(c.execute),
 	}
 	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
-	cmd.Flags().StringVar(&c.backendAPIAddress, "api-api-address", c.backendAPIAddress, "The api API address.")
+	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The api API address.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	return cmd
 }
@@ -42,10 +44,18 @@ func (c *command) execute(ctx context.Context) error {
 	options := []server.Option{
 		server.WithGracePeriod(c.gracePeriod),
 	}
+
+	// HTTP clients
+	taskCli := client.NewTask(c.apiAddress)
+
+	// Pages
+	index := page.NewIndex(taskCli)
+
 	httpServer := server.NewHTTPServer(c.port, options...)
 	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
+	httpServer.Get("/", index.Get)
 	group.Go(func() error {
 		return httpServer.Serve(ctx)
 	})

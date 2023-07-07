@@ -14,6 +14,7 @@ type Task interface {
 	Upsert(ctx context.Context, m *model.Task) error
 	DeleteByID(ctx context.Context, id string) (int64, error)
 	FindByID(ctx context.Context, id string) (*model.Task, error)
+	FindAll(ctx context.Context) ([]*model.Task, error)
 }
 
 func NewTask(db *sql.DB) Task {
@@ -43,4 +44,8 @@ func (r task) DeleteByID(ctx context.Context, id string) (int64, error) {
 
 func (r task) FindByID(ctx context.Context, id string) (*model.Task, error) {
 	return model.FindTask(ctx, r.db, id)
+}
+
+func (r task) FindAll(ctx context.Context) ([]*model.Task, error) {
+	return model.Tasks().All(ctx, r.db)
 }

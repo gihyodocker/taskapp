@@ -98,3 +98,12 @@ api-config-compose.yaml:
 		--database-host mysql \
 		--database-password $(DB_PASSWORD) \
 		--output-file ./api-config-compose.yaml
+
+.PHONY: serve-api
+serve-api:
+	@go run cmd/api/main.go server \
+		--config-file ./api-config-local.yaml
+
+.PHONY: serve-web
+serve-web:
+	@go run cmd/web/main.go server
