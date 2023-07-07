@@ -73,6 +73,7 @@ func (c *command) execute(ctx context.Context) error {
 		w.WriteHeader(http.StatusOK)
 	})
 	httpServer.Get("/api/tasks/{id}", taskHandler.Get)
+	httpServer.Get("/api/tasks", taskHandler.List)
 
 	group.Go(func() error {
 		return httpServer.Serve(ctx)

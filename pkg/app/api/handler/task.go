@@ -21,6 +21,21 @@ func NewTask(taskRepo repository.Task) *Task {
 	}
 }
 
+func (h *Task) List(w http.ResponseWriter, r *http.Request) {
+	tasks, err := h.taskRepo.FindAll(r.Context())
+	if err != nil {
+		slog.Error("failed to get tasks", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(tasks); err != nil {
+		slog.Error("failed to marshal json", err)
+	}
+}
+
 func (h *Task) Get(w http.ResponseWriter, r *http.Request) {
 	taskID := chi.URLParam(r, "id")
 
