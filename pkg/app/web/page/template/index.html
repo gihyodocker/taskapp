@@ -1,19 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Task Management Application by gihyodocker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
-    Hello, Container!
-    <div>
-        <ul>
-            {{ range . }}
-            <li>{{ .Title }}</li>
-            {{ end }}
-        </ul>
+<div class="container">
+    <div class="row my-md-3">
+        <h2>Task Management Application</h2>
+        <div class="row">
+            <div class="alert alert-primary" role="alert">
+                This is a simple application implemented for learning purposes.
+            </div>
+            <a href="/tasks/create">Create Task</a>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-sm mx-md-2">
+            <h4>BACKLOG</h4>
+            {{ range .Backlog }}
+            <div class="row my-md-2">
+                <div class="card" stype="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ .Title }}</h5>
+                        <p class="card-text">{{ .Content }}</p>
+                        <a href="/tasks/{{ .ID }}/edit" class="card-link">Edit</a>
+                        <a href="/tasks/{{ .ID }}/delete" class="card-link">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        <div class="col-sm mx-md-2">
+            <h4>PROGRESS</h4>
+            {{ range .Progress }}
+            <div class="row my-md-2">
+                <div class="card" stype="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ .Title }}</h5>
+                        <p class="card-text">{{ .Content }}</p>
+                        <a href="/tasks/{{ .ID }}/edit" class="card-link">Edit</a>
+                        <a href="/tasks/{{ .ID }}/delete" class="card-link">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        <div class="col-sm mx-md-2">
+            <h4>DONE</h4>
+            {{ range .Done }}
+            <div class="row my-md-2">
+                <div class="card" stype="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ .Title }}</h5>
+                        <p class="card-text">{{ .Content }}</p>
+                        <a href="/tasks/{{ .ID }}/edit" class="card-link">Edit</a>
+                        <a href="/tasks/{{ .ID }}/delete" class="card-link">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

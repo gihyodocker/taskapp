@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
-	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -28,9 +27,9 @@ type Task struct { // ULID 26bytes
 	// タイトル
 	Title string `boil:"title" json:"title" toml:"title" yaml:"title"`
 	// 内容
-	Content null.String `boil:"content" json:"content,omitempty" toml:"content" yaml:"content,omitempty"`
+	Content string `boil:"content" json:"content" toml:"content" yaml:"content"`
 	// ステータス
-	Status null.String `boil:"status" json:"status,omitempty" toml:"status" yaml:"status,omitempty"`
+	Status string `boil:"status" json:"status" toml:"status" yaml:"status"`
 	// 作成時間
 	Created time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
 	// 更新時間
@@ -97,44 +96,6 @@ func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
-type whereHelpernull_String struct{ field string }
-
-func (w whereHelpernull_String) EQ(x null.String) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_String) NEQ(x null.String) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_String) LT(x null.String) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_String) LTE(x null.String) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_String) GT(x null.String) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_String) GTE(x null.String) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-func (w whereHelpernull_String) IN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelpernull_String) NIN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-func (w whereHelpernull_String) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
 type whereHelpertime_Time struct{ field string }
 
 func (w whereHelpertime_Time) EQ(x time.Time) qm.QueryMod {
@@ -159,15 +120,15 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 var TaskWhere = struct {
 	ID      whereHelperstring
 	Title   whereHelperstring
-	Content whereHelpernull_String
-	Status  whereHelpernull_String
+	Content whereHelperstring
+	Status  whereHelperstring
 	Created whereHelpertime_Time
 	Updated whereHelpertime_Time
 }{
 	ID:      whereHelperstring{field: "`task`.`id`"},
 	Title:   whereHelperstring{field: "`task`.`title`"},
-	Content: whereHelpernull_String{field: "`task`.`content`"},
-	Status:  whereHelpernull_String{field: "`task`.`status`"},
+	Content: whereHelperstring{field: "`task`.`content`"},
+	Status:  whereHelperstring{field: "`task`.`status`"},
 	Created: whereHelpertime_Time{field: "`task`.`created`"},
 	Updated: whereHelpertime_Time{field: "`task`.`updated`"},
 }
