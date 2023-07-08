@@ -1,7 +1,6 @@
 package page
 
 import (
-	"embed"
 	"html/template"
 	"net/http"
 
@@ -21,16 +20,13 @@ func NewIndex(taskCli client.TaskClient) *Index {
 	}
 }
 
-//go:embed template
-var templateFS embed.FS
-
 type indexParam struct {
 	Backlog  []*model.Task
 	Progress []*model.Task
 	Done     []*model.Task
 }
 
-func (p *Index) Get(w http.ResponseWriter, r *http.Request) {
+func (p *Index) Index(w http.ResponseWriter, r *http.Request) {
 	tasks, err := p.taskCli.List()
 	if err != nil {
 		slog.Error("failed to get tasks", err)

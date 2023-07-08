@@ -2,8 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/gihyodocker/taskapp/pkg/app/web/client"
-	"github.com/gihyodocker/taskapp/pkg/app/web/page"
 	"net/http"
 	"time"
 
@@ -11,6 +9,8 @@ import (
 	"golang.org/x/exp/slog"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/gihyodocker/taskapp/pkg/app/web/client"
+	"github.com/gihyodocker/taskapp/pkg/app/web/page"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 	"github.com/gihyodocker/taskapp/pkg/server"
 )
@@ -49,13 +49,24 @@ func (c *command) execute(ctx context.Context) error {
 	taskCli := client.NewTask(c.apiAddress)
 
 	// Pages
-	index := page.NewIndex(taskCli)
+	indexPage := page.NewIndex(taskCli)
+	deletePage := page.NewDelete(taskCli)
+	updatePage := page.NewUpdate(taskCli)
+	createPage := page.NewCreate(taskCli)
 
 	httpServer := server.NewHTTPServer(c.port, options...)
 	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
-	httpServer.Get("/", index.Get)
+
+	// endpoints
+	httpServer.Post("/tasks/{id}/update/complete", updatePage.Complete)
+	httpServer.Get("/tasks/{id}/update", updatePage.Input)
+	httpServer.Post("/tasks/{id}/delete/complete", deletePage.Complete)
+	httpServer.Get("/tasks/{id}/delete", deletePage.Confirm)
+	httpServer.Post("/tasks/create/complete", createPage.Complete)
+	httpServer.Get("/tasks/create", createPage.Input)
+	httpServer.Get("/", indexPage.Index)
 	group.Go(func() error {
 		return httpServer.Serve(ctx)
 	})

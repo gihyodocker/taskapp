@@ -72,7 +72,10 @@ func (c *command) execute(ctx context.Context) error {
 	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
+	httpServer.Put("/api/tasks/{id}", taskHandler.Update)
+	httpServer.Delete("/api/tasks/{id}", taskHandler.Delete)
 	httpServer.Get("/api/tasks/{id}", taskHandler.Get)
+	httpServer.Post("/api/tasks", taskHandler.Create)
 	httpServer.Get("/api/tasks", taskHandler.List)
 
 	group.Go(func() error {

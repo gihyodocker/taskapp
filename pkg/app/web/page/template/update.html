@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Task Management Application by gihyodocker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <form action="/tasks/{{ .ID }}/update/complete" method="POST">
+        <div class="row">
+            <h2>Task Management Application</h2>
+            <div class="row my-md-2">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="titleInput" class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" id="titleInput" value="{{ .Title }}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contentInput" class="form-label">Content</label>
+                        <input type="textarea" name="content" class="form-control" id="contentInput" value="{{ .Content }}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="statusInput" class="form-label">Status</label>
+                        <select class="form-select" name="status" aria-label="Default select example" id="statusInput">
+                            <option value="BACKLOG" {{ if (eq .Status "BACKLOG") }}selected{{ end }}>BACKLOG</option>
+                            <option value="PROGRESS" {{ if (eq .Status "PROGRESS") }}selected{{ end }}>PROGRESS</option>
+                            <option value="DONE" {{ if (eq .Status "DONE") }}selected{{ end }}>DONE</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row-4">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </form>
+</div>
