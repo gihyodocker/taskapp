@@ -31,7 +31,7 @@ func (r task) Upsert(ctx context.Context, m *model.Task) error {
 	return m.Upsert(
 		ctx,
 		r.db,
-		boil.Whitelist("title", "content", "status", "updated_at"),
+		boil.Whitelist("title", "content", "status", "updated"),
 		boil.Infer(),
 	)
 }
@@ -47,5 +47,5 @@ func (r task) FindByID(ctx context.Context, id string) (*model.Task, error) {
 }
 
 func (r task) FindAll(ctx context.Context) ([]*model.Task, error) {
-	return model.Tasks().All(ctx, r.db)
+	return model.Tasks(qm.OrderBy("updated DESC")).All(ctx, r.db)
 }
