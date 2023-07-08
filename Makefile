@@ -106,4 +106,5 @@ serve-api:
 
 .PHONY: serve-web
 serve-web:
-	@go run cmd/web/main.go server
+	@go run cmd/web/main.go server \
+		--assets-dir $(PWD)/assets \

@@ -58,6 +58,10 @@ func (s *HTTPServer) Delete(pattern string, handlerFn http.HandlerFunc) {
 	s.mux.Delete(pattern, handlerFn)
 }
 
+func (s *HTTPServer) Handle(pattern string, handler http.Handler) {
+	s.mux.Handle(pattern, handler)
+}
+
 func (s *HTTPServer) Serve(ctx context.Context) error {
 	doneCh := make(chan error, 1)
 	ctx, cancel := context.WithCancel(ctx)

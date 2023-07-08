@@ -18,6 +18,7 @@ import (
 type command struct {
 	port        int
 	apiAddress  string
+	assetsDir   string
 	gracePeriod time.Duration
 }
 
@@ -34,6 +35,7 @@ func NewCommand() *cobra.Command {
 	}
 	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
 	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The api API address.")
+	cmd.Flags().StringVar(&c.assetsDir, "assets-dir", c.assetsDir, "The path to the assets directory.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	return cmd
 }
@@ -55,11 +57,15 @@ func (c *command) execute(ctx context.Context) error {
 	createPage := page.NewCreate(taskCli)
 
 	httpServer := server.NewHTTPServer(c.port, options...)
+	// Health check
 	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	// endpoints
+	// Static files
+	httpServer.Handle("/assets/*", http.StripPrefix("/assets", http.FileServer(http.Dir(c.assetsDir))))
+
+	// Task application endpoints
 	httpServer.Post("/tasks/{id}/update/complete", updatePage.Complete)
 	httpServer.Get("/tasks/{id}/update", updatePage.Input)
 	httpServer.Post("/tasks/{id}/delete/complete", deletePage.Complete)
