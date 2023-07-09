@@ -37,6 +37,8 @@ func NewCommand() *cobra.Command {
 	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	cmd.Flags().StringVar(&c.configFile, "config-file", c.configFile, "The path to the config file.")
+
+	cmd.MarkFlagRequired("config-file")
 	return cmd
 }
 
@@ -51,7 +53,6 @@ func (c *command) execute(ctx context.Context) error {
 		)
 		return err
 	}
-	// TODO Validate Config
 	// Open MySQL connection
 	dbConn, err := createMySQL(*appConfig.Database)
 	if err != nil {

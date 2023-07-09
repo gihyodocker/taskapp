@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/gihyodocker/taskapp/pkg/app/web/server"
+	"github.com/gihyodocker/taskapp/pkg/app/web/cmd/server"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 )
 
