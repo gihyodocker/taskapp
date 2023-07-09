@@ -1,3 +1,0 @@
-upstream web {
-   server ${WEB_HOST} max_fails=${WEB_MAX_FAILS} fail_timeout=${WEB_FAIL_TIMEOUT};
-}
