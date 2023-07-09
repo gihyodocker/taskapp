@@ -23,8 +23,6 @@ DB_USERNAME ?= taskapp_user
 DB_PASSWORD := $(shell if [ -f $(MYSQL_PASSWORD_PATH) ]; then cat $(MYSQL_PASSWORD_PATH); else echo "password"; fi )
 
 ROOT_PACKAGE := github.com/gihyodocker/taskapp
-VERSION_PACKAGE := $(ROOT_PACKAGE)/pkg/version
-LDFLAG_VERSION := $(VERSION_PACKAGE).version
 
 .PHONY: tidy
 tidy:
@@ -76,10 +74,7 @@ generate-db-model: sqlboiler.toml
 
 .PHONY: $(BUILD_TARGETS)
 $(BUILD_TARGETS): build-%:
-	$(eval GIT_COMMIT := $(shell git describe --tags --always))
-	CGO_ENABLED=0 GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) \
-		go build -ldflags "-s -w -X $(LDFLAG_VERSION)=$(GIT_COMMIT)" \
-		-o ./bin/$* -mod=vendor cmd/$*/main.go
+	CGO_ENABLED=0 GO111MODULE=on GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o ./bin/$* -mod=vendor cmd/$*/main.go
 
 .PHONY: make-mysql-passwords
 make-mysql-passwords:
