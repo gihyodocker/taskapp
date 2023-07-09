@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/gihyodocker/taskapp/pkg/app/api/config"
-	"github.com/gihyodocker/taskapp/pkg/app/api/server"
+	"github.com/gihyodocker/taskapp/pkg/app/api/cmd/config"
+	"github.com/gihyodocker/taskapp/pkg/app/api/cmd/server"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 )
 
