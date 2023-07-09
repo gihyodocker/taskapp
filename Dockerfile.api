@@ -1,9 +1,9 @@
-FROM golang:1.20.4
+FROM golang:1.20.5
 
 WORKDIR /go/src/github.com/gihyodocker/taskapp
 COPY . .
 
 RUN make mod
-RUN make build-backend
+RUN make build-api
 
-ENTRYPOINT ["./bin/backend"]
+ENTRYPOINT ["./bin/api"]

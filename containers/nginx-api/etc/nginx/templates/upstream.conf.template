@@ -1,0 +1,3 @@
+upstream api {
+   server ${API_HOST} max_fails=${API_MAX_FAILS} fail_timeout=${API_FAIL_TIMEOUT};
+}
