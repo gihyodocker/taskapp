@@ -37,6 +37,8 @@ func NewCommand() *cobra.Command {
 	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The api API address.")
 	cmd.Flags().StringVar(&c.assetsDir, "assets-dir", c.assetsDir, "The path to the assets directory.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
+
+	cmd.MarkFlagRequired("assets-dir")
 	return cmd
 }
 
