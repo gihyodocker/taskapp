@@ -60,7 +60,7 @@ services:
       api:
         condition: service_healthy
     healthcheck:
-      test: "curl -H 'Host: api' -f http://localhost:8180/healthz || exit 1"
+      test: "curl -H 'Host: api' -f http://localhost:80/healthz || exit 1"
       interval: 10s
       timeout: 10s
       retries: 3
@@ -79,13 +79,38 @@ services:
       context: .
       dockerfile: Dockerfile.web
     depends_on:
-      - api
+      - nginx-api
+    healthcheck:
+      test: "curl -f http://localhost:8280/healthz || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     command:
       - "server"
-      - "--api-address=http://api:8180"
-      - "--assets-dir=/assets"
+      - "--api-address=http://nginx-api:80"
+      - "--assets-dir=/go/src/github.com/gihyodocker/taskapp/assets"
+
+  nginx-web:
+    build:
+      context: ./containers/nginx-web
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: "curl -H 'Host: api' -f http://localhost:80/healthz || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      NGINX_PORT: 80
+      SERVER_NAME: localhost
+      WEB_HOST: web:8280
+      WEB_MAX_FAILS: 3
+      WEB_FAIL_TIMEOUT: 10s
     ports:
-      - "9280:8280"
+      - "9280:80"
 
 
 secrets:
