@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/gihyodocker/taskapp/pkg/app/tools/mysql"
+	"github.com/gihyodocker/taskapp/pkg/app/tools/cmd/mysql"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 )
 

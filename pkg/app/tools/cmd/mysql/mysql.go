@@ -3,7 +3,7 @@ package mysql
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/gihyodocker/taskapp/pkg/app/tools/mysql/password"
+	"github.com/gihyodocker/taskapp/pkg/app/tools/cmd/mysql/password"
 )
 
 func NewCommand() *cobra.Command {
