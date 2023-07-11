@@ -2,6 +2,12 @@ server {
     listen ${NGINX_PORT};
     server_name ${SERVER_NAME};
 
+    location /assets/ {
+        alias ${ASSETS_DIR}/;
+        access_log  /dev/stdout main;
+        error_log   /dev/stderr;
+    }
+
     location / {
         proxy_pass http://web;
         proxy_set_header Host $host;
