@@ -38,7 +38,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: ./containers/api/Dockerfile
     depends_on:
       - mysql
     healthcheck:
@@ -77,7 +77,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.web
+      dockerfile: ./containers/web/Dockerfile
     depends_on:
       - nginx-api
     healthcheck:
@@ -116,7 +116,6 @@ services:
       - "9280:80"
     volumes:
       - assets_data:/var/www/assets
-
 
 secrets:
   mysql_root_password:
