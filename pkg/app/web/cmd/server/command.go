@@ -10,7 +10,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"github.com/gihyodocker/taskapp/pkg/app/web/client"
-	"github.com/gihyodocker/taskapp/pkg/app/web/page"
+	"github.com/gihyodocker/taskapp/pkg/app/web/handler"
 	"github.com/gihyodocker/taskapp/pkg/cli"
 	"github.com/gihyodocker/taskapp/pkg/server"
 )
@@ -52,11 +52,11 @@ func (c *command) execute(ctx context.Context) error {
 	// HTTP clients
 	taskCli := client.NewTask(c.apiAddress)
 
-	// Pages
-	indexPage := page.NewIndex(taskCli)
-	deletePage := page.NewDelete(taskCli)
-	updatePage := page.NewUpdate(taskCli)
-	createPage := page.NewCreate(taskCli)
+	// Handlers
+	indexHandler := handler.NewIndex(taskCli)
+	deleteHandler := handler.NewDelete(taskCli)
+	updateHandler := handler.NewUpdate(taskCli)
+	createHandler := handler.NewCreate(taskCli)
 
 	httpServer := server.NewHTTPServer(c.port, options...)
 	// Health check
@@ -68,13 +68,13 @@ func (c *command) execute(ctx context.Context) error {
 	httpServer.Handle("/assets/*", http.StripPrefix("/assets", http.FileServer(http.Dir(c.assetsDir))))
 
 	// Task application endpoints
-	httpServer.Post("/tasks/{id}/update/complete", updatePage.Complete)
-	httpServer.Get("/tasks/{id}/update", updatePage.Input)
-	httpServer.Post("/tasks/{id}/delete/complete", deletePage.Complete)
-	httpServer.Get("/tasks/{id}/delete", deletePage.Confirm)
-	httpServer.Post("/tasks/create/complete", createPage.Complete)
-	httpServer.Get("/tasks/create", createPage.Input)
-	httpServer.Get("/", indexPage.Index)
+	httpServer.Post("/tasks/{id}/update/complete", updateHandler.Complete)
+	httpServer.Get("/tasks/{id}/update", updateHandler.Input)
+	httpServer.Post("/tasks/{id}/delete/complete", deleteHandler.Complete)
+	httpServer.Get("/tasks/{id}/delete", deleteHandler.Confirm)
+	httpServer.Post("/tasks/create/complete", createHandler.Complete)
+	httpServer.Get("/tasks/create", createHandler.Input)
+	httpServer.Get("/", indexHandler.Index)
 	group.Go(func() error {
 		return httpServer.Serve(ctx)
 	})
