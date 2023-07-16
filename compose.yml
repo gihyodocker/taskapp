@@ -68,9 +68,9 @@ services:
     environment:
       NGINX_PORT: 80
       SERVER_NAME: api
-      API_HOST: api:8180
-      API_MAX_FAILS: 3
-      API_FAIL_TIMEOUT: 10s
+      BACKEND_HOST: api:8180
+      BACKEND_MAX_FAILS: 3
+      BACKEND_FAIL_TIMEOUT: 10s
     ports:
       - "9180:80"
 
@@ -109,9 +109,9 @@ services:
       NGINX_PORT: 80
       SERVER_NAME: localhost
       ASSETS_DIR: /var/www/assets
-      WEB_HOST: web:8280
-      WEB_MAX_FAILS: 3
-      WEB_FAIL_TIMEOUT: 10s
+      BACKEND_HOST: web:8280
+      BACKEND_MAX_FAILS: 3
+      BACKEND_FAIL_TIMEOUT: 10s
     ports:
       - "9280:80"
     volumes:
