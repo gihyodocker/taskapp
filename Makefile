@@ -1,8 +1,3 @@
-# TODO: Remove when this repository is published
-ifndef GOPRIVATE
-	GOPRIVATE="github.com/gihyodocker"
-endif
-
 ifndef GOARCH
 	GOARCH=$(shell go env GOARCH)
 endif
@@ -30,11 +25,11 @@ tidy:
 
 .PHONY: vendor
 vendor:
-	GOPRIVATE=$(GOPRIVATE) GO111MODULE=on go mod vendor
+	GO111MODULE=on go mod vendor
 
 .PHONY: mod
 mod:
-	GOPRIVATE=$(GOPRIVATE) GO111MODULE=on go mod download 
+	GO111MODULE=on go mod download 
 
 .PHONY: setup-db-tools
 setup-db-tools:
