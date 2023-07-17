@@ -89,7 +89,6 @@ services:
     command:
       - "server"
       - "--api-address=http://nginx-api:80"
-      - "--assets-dir=/go/src/github.com/gihyodocker/taskapp/assets"
     volumes:
       - assets_data:/go/src/github.com/gihyodocker/taskapp/assets
 

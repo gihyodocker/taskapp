@@ -37,8 +37,6 @@ func NewCommand() *cobra.Command {
 	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The api API address.")
 	cmd.Flags().StringVar(&c.assetsDir, "assets-dir", c.assetsDir, "The path to the assets directory.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
-
-	cmd.MarkFlagRequired("assets-dir")
 	return cmd
 }
 
@@ -65,7 +63,9 @@ func (c *command) execute(ctx context.Context) error {
 	})
 
 	// Static files
-	httpServer.Handle("/assets/*", http.StripPrefix("/assets", http.FileServer(http.Dir(c.assetsDir))))
+	if c.assetsDir != "" {
+		httpServer.Handle("/assets/*", http.StripPrefix("/assets", http.FileServer(http.Dir(c.assetsDir))))
+	}
 
 	// Task application endpoints
 	httpServer.Post("/tasks/{id}/update/complete", updateHandler.Complete)
