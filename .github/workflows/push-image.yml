@@ -2,11 +2,8 @@ name: Push the container image
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-#    tags:
-#      - 'v*'
+    tags:
+      - 'v*'
 
 env:
   GO_VERSION: 1.20.5
@@ -15,6 +12,7 @@ env:
 jobs:
   push_image:
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
@@ -35,19 +33,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      # mysql image
       - name: Build and push mysql
         uses: docker/build-push-action@v4
         with:
           context: ./containers/mysql
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-mysql:${{ env.IMAGE_VERSION }}
       - name: Build and push migrator
         uses: docker/build-push-action@v4
         with:
           context: ./containers/migrator
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-migrator:${{ env.IMAGE_VERSION }}
       - name: Build and push api
@@ -55,7 +52,7 @@ jobs:
         with:
           context: .
           file: ./containers/api/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-api:${{ env.IMAGE_VERSION }}
       - name: Build and push web
@@ -63,20 +60,20 @@ jobs:
         with:
           context: .
           file: ./containers/web/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-web:${{ env.IMAGE_VERSION }}
       - name: Build and push nginx-api
         uses: docker/build-push-action@v4
         with:
           context: ./containers/nginx-api
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-nginx-api:${{ env.IMAGE_VERSION }}
       - name: Build and push nginx-web
         uses: docker/build-push-action@v4
         with:
           context: ./containers/nginx-web
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-nginx-web:${{ env.IMAGE_VERSION }}
