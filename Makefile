@@ -98,3 +98,10 @@ serve-api:
 serve-web:
 	@go run cmd/web/main.go server \
 		--assets-dir $(PWD)/assets \
+
+.PHONY: generate-k8s-mysql-secret
+generate-k8s-mysql-secret:
+	@kubectl create secret generic mysql --dry-run=client -o yaml \
+		--from-literal=root_password=$(shell cat ./secrets/mysql_root_password) \
+		--from-literal=username=$(DB_USERNAME) \
+		--from-literal=password=$(DB_PASSWORD) > ./k8s/plain/mysql/secret.yaml
