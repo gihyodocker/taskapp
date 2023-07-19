@@ -109,4 +109,4 @@ make-k8s-mysql-secret:
 .PHONY: make-k8s-api-config
 make-k8s-api-config:
 	@kubectl create secret generic api-config --dry-run=client -o yaml \
-		--from-file=api-config.yaml=./api-config-compose.yaml > ./k8s/plain/api/api-config-config.yaml
+		--from-file=api-config.yaml=./api-config-compose.yaml > ./k8s/plain/api/api-config-secret.yaml
