@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+secretGenerator:
+  - name: api-config
+    files:
+      - api-config.yaml=../../../api-config-compose.yaml
+    type: Opaque
+
+resources:
+- deployment.yaml
+- service.yaml
