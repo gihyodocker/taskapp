@@ -19,6 +19,10 @@ DB_PASSWORD := $(shell if [ -f $(MYSQL_PASSWORD_PATH) ]; then cat $(MYSQL_PASSWO
 
 ROOT_PACKAGE := github.com/gihyodocker/taskapp
 
+.PHONY: install-tools
+install-tools:
+	@sh hack/install-tools.sh
+
 .PHONY: tidy
 tidy:
 	GO111MODULE=on go mod tidy
