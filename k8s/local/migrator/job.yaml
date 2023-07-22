@@ -23,13 +23,13 @@ spec:
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mysql
-                  key: username
+                  name: job
+                  key: db_username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql
-                  key: password
+                  name: job
+                  key: db_password
           command:
             - "bash"
             - "/migrator/migrate.sh"
