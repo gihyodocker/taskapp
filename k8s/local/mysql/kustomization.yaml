@@ -11,6 +11,5 @@ secretGenerator:
   type: Opaque
 
 resources:
-- pvc.yaml
 - service.yaml
 - statefulset.yaml
