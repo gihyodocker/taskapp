@@ -86,12 +86,12 @@ api-config-local.yaml:
 		--database-password $(DB_PASSWORD) \
 		--output-file ./api-config-local.yaml
 
-.PHONY: api-config-compose.yaml
-api-config-compose.yaml:
+.PHONY: api-config.yaml
+api-config.yaml:
 	@go run cmd/api/main.go config \
 		--database-host mysql \
 		--database-password $(DB_PASSWORD) \
-		--output-file ./api-config-compose.yaml
+		--output-file ./api-config.yaml
 
 .PHONY: serve-api
 serve-api:
@@ -113,5 +113,5 @@ make-k8s-mysql-secret:
 .PHONY: make-k8s-api-config
 make-k8s-api-config:
 	@kubectl create secret generic api-config --dry-run=client -o yaml \
-		--from-file=api-config.yaml=./api-config-compose.yaml > ./k8s/local/plain/api-config-secret.yaml
+		--from-file=api-config.yaml=./api-config.yaml > ./k8s/local/plain/api-config-secret.yaml
 	@cp ./k8s/local/plain/api-config-secret.yaml ./k8s/okteto/plain/api-config-secret.yaml
