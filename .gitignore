@@ -25,6 +25,6 @@ vendor/
 
 /secrets/*
 
-api-config-*.yaml
+api-config*.yaml
 
 *secret.yaml
