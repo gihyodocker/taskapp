@@ -5,9 +5,7 @@ secretGenerator:
 - name: mysql
   files:
     - root_password=../../../secrets/mysql_root_password
-    - password=../../../secrets/mysql_user_password
-  literals:
-    - username=taskapp_user
+    - user_password=../../../secrets/mysql_user_password
   type: Opaque
 
 resources:

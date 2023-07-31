@@ -107,8 +107,8 @@ serve-web:
 make-k8s-mysql-secret:
 	@kubectl create secret generic mysql --dry-run=client -o yaml \
 		--from-literal=root_password=$(shell cat ./secrets/mysql_root_password) \
-		--from-literal=user_password=$(DB_PASSWORD) > ./k8s/local/plain/secret.yaml
-	@cp ./k8s/local/plain/secret.yaml ./k8s/okteto/plain/secret.yaml
+		--from-literal=user_password=$(DB_PASSWORD) > ./k8s/local/plain/mysql-secret.yaml
+	@cp ./k8s/local/plain/mysql-secret.yaml ./k8s/okteto/plain/mysql-secret.yaml
 
 .PHONY: make-k8s-api-config
 make-k8s-api-config:
