@@ -28,15 +28,12 @@ spec:
             - name: MYSQL_DATABASE
               value: taskapp
             - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mysql
-                  key: username
+              value: taskapp_user
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql
-                  key: password
+                  key: user_password
           ports:
             - containerPort: 3306
               name: mysql
