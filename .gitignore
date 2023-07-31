@@ -27,4 +27,4 @@ vendor/
 
 api-config-*.yaml
 
-secret.yaml
+*secret.yaml
