@@ -122,7 +122,7 @@ secrets:
   mysql_user_password:
     file: ./secrets/mysql_user_password
   api_config:
-    file: ./api-config-compose.yaml
+    file: ./api-config.yaml
 
 volumes:
   mysql_data:

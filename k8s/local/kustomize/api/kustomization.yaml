@@ -4,7 +4,7 @@ kind: Kustomization
 secretGenerator:
   - name: api-config
     files:
-      - api-config.yaml=../../../api-config-compose.yaml
+      - api-config.yaml=../../../api-config.yaml
     type: Opaque
 
 resources:
