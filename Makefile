@@ -109,8 +109,10 @@ make-k8s-mysql-secret:
 		--from-literal=root_password=$(shell cat ./secrets/mysql_root_password) \
 		--from-literal=username=$(DB_USERNAME) \
 		--from-literal=password=$(DB_PASSWORD) > ./k8s/local/plain/secret.yaml
+	@cp ./k8s/local/plain/secret.yaml ./k8s/okteto/plain/secret.yaml
 
 .PHONY: make-k8s-api-config
 make-k8s-api-config:
 	@kubectl create secret generic api-config --dry-run=client -o yaml \
 		--from-file=api-config.yaml=./api-config-compose.yaml > ./k8s/local/plain/api-config-secret.yaml
+	@cp ./k8s/local/plain/api-config-secret.yaml ./k8s/okteto/plain/api-config-secret.yaml

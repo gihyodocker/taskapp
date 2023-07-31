@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrator-up
+  labels:
+    app: migrator
+spec:
+  template:
+    metadata:
+      labels:
+        app: migrator
+    spec:
+      containers:
+        - name: migrator
+          image: ghcr.io/gihyodocker/taskapp-migrator:v0.0.1
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: taskapp
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql
+                  key: password
+          command:
+            - "bash"
+            - "/migrator/migrate.sh"
+          args:
+            - "$(DB_HOST)"
+            - "$(DB_PORT)"
+            - "$(DB_NAME)"
+            - "$(DB_USERNAME)"
+            - "$(DB_PASSWORD)"
+            - "up"
+      restartPolicy: Never
+  backoffLimit: 3
