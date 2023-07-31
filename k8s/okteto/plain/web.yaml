@@ -1,0 +1,90 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  annotations:
+    dev.okteto.com/generate-host: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: web
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      initContainers:
+        - name: init
+          image: ghcr.io/gihyodocker/taskapp-web:v0.0.1
+          command:
+            - "sh"
+            - "-c"
+            - "cp -r /go/src/github.com/gihyodocker/taskapp/assets/* /var/www/assets"
+          volumeMounts:
+            - name: assets-volume
+              mountPath: "/var/www/assets"
+      containers:
+        - name: nginx
+          image: ghcr.io/gihyodocker/taskapp-nginx-web:v0.0.1
+          env:
+            - name: NGINX_PORT
+              value: "80"
+            - name: SERVER_NAME
+              value: "nginx-web"
+            - name: ASSETS_DIR
+              value: "/var/www/assets"
+            - name: BACKEND_HOST
+              value: "localhost:8280"
+            - name: BACKEND_MAX_FAILS
+              value: "3"
+            - name: BACKEND_FAIL_TIMEOUT
+              value: "10s"
+          volumeMounts:
+            - name: assets-volume
+              mountPath: "/var/www/assets"
+              readOnly: true
+        - name: web
+          image: ghcr.io/gihyodocker/taskapp-web:v0.0.1
+          ports:
+            - containerPort: 8280
+          args:
+            - "server"
+            - "--api-address=http://api:80"
+      volumes:
+        - name: assets-volume
+          emptyDir: {}
