@@ -25,7 +25,7 @@ spec:
             - name: assets-volume
               mountPath: "/var/www/assets"
       containers:
-        - name: nginx
+        - name: nginx-web
           image: ghcr.io/gihyodocker/taskapp-nginx-web:v0.0.1
           env:
             - name: NGINX_PORT
@@ -75,6 +75,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: web
+  labels:
+    app: web
   annotations:
     dev.okteto.com/generate-host: "true"
 spec:
