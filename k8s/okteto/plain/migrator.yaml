@@ -21,15 +21,12 @@ spec:
             - name: DB_PORT
               value: "3306"
             - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mysql
-                  key: username
+              value: taskapp_user
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql
-                  key: password
+                  key: user_password
           command:
             - "bash"
             - "/migrator/migrate.sh"

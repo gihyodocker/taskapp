@@ -15,7 +15,7 @@ spec:
         app: api
     spec:
       containers:
-        - name: nginx
+        - name: nginx-api
           image: ghcr.io/gihyodocker/taskapp-nginx-api:v0.0.1
           env:
             - name: NGINX_PORT

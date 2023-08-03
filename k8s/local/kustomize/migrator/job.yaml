@@ -21,15 +21,12 @@ spec:
             - name: DB_PORT
               value: "3306"
             - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: job
-                  key: db_username
+              value: taskapp_user
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: job
-                  key: db_password
+                  key: user_password
           command:
             - "bash"
             - "/migrator/migrate.sh"

@@ -25,13 +25,13 @@ spec:
             - name: assets-volume
               mountPath: "/var/www/assets"
       containers:
-        - name: nginx
+        - name: nginx-web
           image: ghcr.io/gihyodocker/taskapp-nginx-web:v0.0.1
           env:
             - name: NGINX_PORT
               value: "80"
             - name: SERVER_NAME
-              value: "nginx-web"
+              value: "localhost"
             - name: ASSETS_DIR
               value: "/var/www/assets"
             - name: BACKEND_HOST
