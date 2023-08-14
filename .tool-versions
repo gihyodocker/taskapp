@@ -3,3 +3,4 @@ tilt 0.33.2
 kustomize 5.0.3
 okteto 2.18.0
 kubectx 0.9.5
+helm 3.12.3
