@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nginx-api
-          image: ghcr.io/gihyodocker/taskapp-nginx-api:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-nginx-api:v0.1.0
           env:
             - name: NGINX_PORT
               value: "80"
@@ -29,7 +29,7 @@ spec:
             - name: BACKEND_FAIL_TIMEOUT
               value: "10s"
         - name: api
-          image: ghcr.io/gihyodocker/taskapp-api:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-api:v0.1.0
           ports:
             - containerPort: 8180
           args:

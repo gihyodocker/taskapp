@@ -1,0 +1,17 @@
+allow_k8s_contexts([
+  'docker-desktop',
+  'kind-kind',
+  'minikube'
+])
+
+default_namespace = 'taskapp'
+
+load('ext://namespace', 'namespace_yaml', 'namespace_create', 'namespace_inject')
+k8s_yaml(namespace_yaml(default_namespace), allow_duplicates=False)
+
+k8s_yaml(namespace_inject(read_file('./mysql-secret.yaml'), default_namespace))
+k8s_yaml(namespace_inject(read_file('./mysql.yaml'), default_namespace))
+k8s_yaml(namespace_inject(read_file('./migrator.yaml'), default_namespace))
+k8s_yaml(namespace_inject(read_file('./api-config-secret.yaml'), default_namespace))
+k8s_yaml(namespace_inject(read_file('./api.yaml'), default_namespace))
+k8s_yaml(namespace_inject(read_file('./web.yaml'), default_namespace))
