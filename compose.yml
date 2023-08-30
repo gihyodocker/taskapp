@@ -29,8 +29,7 @@ services:
       DB_USERNAME: taskapp_user
     command: >
         sh -c '
-            DB_PASSWORD=$(cat /run/secrets/mysql_user_password)
-            bash /migrator/migrate.sh $$DB_HOST $$DB_PORT $$DB_NAME $$DB_USERNAME $$DB_PASSWORD up
+            bash /migrator/migrate.sh $$DB_HOST $$DB_PORT $$DB_NAME $$DB_USERNAME /run/secrets/mysql_user_password up
         '
     secrets:
       - mysql_user_password
