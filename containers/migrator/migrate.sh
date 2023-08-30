@@ -13,7 +13,13 @@ db_host=$1
 db_port=$2
 db_name=$3
 db_username=$4
-db_password=$5
+
+if [ -e "$5" ]; then
+  db_password=`cat $5`
+else
+  db_password=$5
+fi
+
 command=$6
 
 echo "Waiting for MySQL to start..."
