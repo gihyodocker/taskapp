@@ -23,7 +23,7 @@ vendor/
 
 .DS_Store
 
-/secrets/*
+secrets/
 
 api-config*.yaml
 

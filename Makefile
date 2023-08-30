@@ -79,6 +79,7 @@ $(BUILD_TARGETS): build-%:
 make-mysql-passwords:
 	@mkdir -p ./secrets
 	@go run cmd/tools/main.go mysql generate-password
+	@cp -R ./secrets ./k8s/kustomize/base/mysql/ ./k8s/kustomize/base/migrator/
 
 .PHONY: api-config-local.yaml
 api-config-local.yaml:
@@ -92,6 +93,7 @@ api-config.yaml:
 		--database-host mysql \
 		--database-password $(DB_PASSWORD) \
 		--output-file ./api-config.yaml
+	@cp ./api-config.yaml ./k8s/kustomize/base/api/
 
 .PHONY: serve-api
 serve-api:
