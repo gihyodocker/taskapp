@@ -8,7 +8,7 @@ spec:
     spec:
       initContainers:
         - name: init
-          image: ghcr.io/gihyodocker/taskapp-web:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-web:v0.1.0
           command:
             - "sh"
             - "-c"
@@ -18,7 +18,7 @@ spec:
               mountPath: "/var/www/assets"
       containers:
         - name: nginx-web
-          image: ghcr.io/gihyodocker/taskapp-nginx-web:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-nginx-web:v0.1.0
           env:
             - name: NGINX_PORT
               value: "80"
@@ -37,7 +37,7 @@ spec:
               mountPath: "/var/www/assets"
               readOnly: true
         - name: web
-          image: ghcr.io/gihyodocker/taskapp-web:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-web:v0.1.0
           ports:
             - containerPort: 8280
           args:
