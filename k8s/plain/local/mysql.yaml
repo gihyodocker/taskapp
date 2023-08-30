@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mysql
-          image: ghcr.io/gihyodocker/taskapp-mysql:v0.0.1
+          image: ghcr.io/gihyodocker/taskapp-mysql:v0.1.0
           env:
             - name: MYSQL_ROOT_PASSWORD_FILE
               value: /var/run/secrets/mysql/root_password
@@ -50,7 +50,6 @@ spec:
         requests:
           storage: 1Gi
 
-
 ---
 apiVersion: v1
 kind: Service
@@ -66,3 +65,4 @@ spec:
   selector:
     app: mysql
   clusterIP: None
+
