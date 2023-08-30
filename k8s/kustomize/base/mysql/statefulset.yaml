@@ -2,18 +2,10 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  labels:
-    app: mysql
 spec:
-  selector:
-    matchLabels:
-      app: mysql
   serviceName: "mysql"
   replicas: 1
   template:
-    metadata:
-      labels:
-        app: mysql
     spec:
       terminationGracePeriodSeconds: 10
       containers:
