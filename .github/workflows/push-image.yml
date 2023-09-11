@@ -55,6 +55,14 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-api:${{ env.IMAGE_VERSION }}
+      - name: Slim build and push api
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./containers/api/Dockerfile.slim
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-api:${{ env.IMAGE_VERSION }}-slim
       - name: Build and push web
         uses: docker/build-push-action@v4
         with:
@@ -63,6 +71,14 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-web:${{ env.IMAGE_VERSION }}
+      - name: Slim build and push web
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./containers/web/Dockerfile.slim
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ env.CONTAINER_REGISTRY }}/${{ github.repository }}-web:${{ env.IMAGE_VERSION }}-slim
       - name: Build and push nginx-api
         uses: docker/build-push-action@v4
         with:

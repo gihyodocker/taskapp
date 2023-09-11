@@ -1,0 +1,21 @@
+FROM --platform=$BUILDPLATFORM golang:1.20.5 AS build
+
+ARG TARGETARCH
+
+WORKDIR /go/src/github.com/gihyodocker/taskapp
+
+COPY ./cmd ./cmd
+COPY ./pkg ./pkg
+COPY go.mod .
+COPY go.sum .
+COPY Makefile .
+
+RUN make mod
+RUN make vendor
+RUN GOARCH=${TARGETARCH} make build-api
+
+FROM gcr.io/distroless/base-debian11:nonroot
+
+COPY --from=build --chown=nonroot:nonroot /go/src/github.com/gihyodocker/taskapp/bin/api /usr/local/bin/
+
+ENTRYPOINT ["api"]
