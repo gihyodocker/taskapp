@@ -79,7 +79,8 @@ $(BUILD_TARGETS): build-%:
 make-mysql-passwords:
 	@mkdir -p ./secrets
 	@go run cmd/tools/main.go mysql generate-password
-	@cp -R ./secrets ./k8s/kustomize/base/mysql/ ./k8s/kustomize/base/migrator/
+	@cp -R ./secrets ./k8s/kustomize/base/mysql/
+	@cp -R ./secrets ./k8s/kustomize/base/migrator/
 
 .PHONY: api-config-local.yaml
 api-config-local.yaml:
