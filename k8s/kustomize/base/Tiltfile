@@ -1,0 +1,13 @@
+allow_k8s_contexts([
+  'docker-desktop',
+  'kind-kind',
+  'minikube'
+])
+
+default_namespace = 'taskapp'
+
+load('ext://namespace', 'namespace_yaml', 'namespace_create', 'namespace_inject')
+k8s_yaml(namespace_yaml(default_namespace), allow_duplicates=False)
+
+yaml = kustomize('.')
+k8s_yaml(yaml)
