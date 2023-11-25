@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	c := cli.NewCLI("taskapp-api", "The api API application of taskapp")
+	c := cli.NewCLI("taskapp-api", "The API application of taskapp")
 	c.AddCommands(
 		server.NewCommand(),
 		config.NewCommand(),

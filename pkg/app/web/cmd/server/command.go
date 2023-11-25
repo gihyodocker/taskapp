@@ -34,7 +34,7 @@ func NewCommand() *cobra.Command {
 		RunE:  cli.WithContext(c.execute),
 	}
 	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
-	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The api API address.")
+	cmd.Flags().StringVar(&c.apiAddress, "api-address", c.apiAddress, "The API address.")
 	cmd.Flags().StringVar(&c.assetsDir, "assets-dir", c.assetsDir, "The path to the assets directory.")
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
 	return cmd
