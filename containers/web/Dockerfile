@@ -1,4 +1,4 @@
-FROM golang:1.20.5
+FROM golang:1.21.6
 
 WORKDIR /go/src/github.com/gihyodocker/taskapp
 
