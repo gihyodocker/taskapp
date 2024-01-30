@@ -25,7 +25,7 @@ spec:
             - name: MYSQL_DATABASE
               value: taskapp
             - name: MYSQL_USER
-              value: 
+              value: taskapp_user
             - name: MYSQL_PASSWORD_FILE
               value: /var/run/secrets/mysql/user_password
           ports:
@@ -65,3 +65,4 @@ spec:
   selector:
     app: mysql
   clusterIP: None
+
