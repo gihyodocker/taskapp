@@ -1,6 +1,5 @@
 golang 1.21.6
 tilt 0.33.10
 kustomize 5.3.0
-okteto 2.18.0
 kubectx 0.9.5
 helm 3.13.3

@@ -31,7 +31,7 @@ spec:
             - name: NGINX_PORT
               value: "80"
             - name: SERVER_NAME
-              value: "nginx-web"
+              value: "localhost"
             - name: ASSETS_DIR
               value: "/var/www/assets"
             - name: BACKEND_HOST
@@ -77,9 +77,8 @@ metadata:
   name: web
   labels:
     app: web
-  annotations:
-    dev.okteto.com/generate-host: "true"
 spec:
+  ingressClassName: azure-application-gateway
   rules:
     - http:
         paths:
